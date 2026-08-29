@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>OCA — Oxford Capacity Analysis | Прохождение теста</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232456c7'/%3E%3Ctext x='32' y='41' font-family='Arial' font-size='24' font-weight='bold' fill='white' text-anchor='middle'%3EOC%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#eef2f7; --card:#ffffff; --ink:#1b2635; --muted:#64748b; --line:#dbe3ec;
+  --accent:#2456c7; --accent-soft:#e8eefc; --accent-dark:#173a8a;
+  --yes:#2e9e5b; --yes-soft:#e6f5ec; --mb:#dd9a10; --mb-soft:#faf3dd;
+  --no:#d24949; --no-soft:#fbe9e9;
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px -12px rgba(16,24,40,.18);
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
+  font-size:16px; line-height:1.5; min-height:100vh;
+  -webkit-text-size-adjust:100%;
+}
+button{font-family:inherit}
+.app{max-width:980px;margin:0 auto;padding:0 16px 48px}
+/* ---------- header ---------- */
+.topbar{
+  position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);margin:0 0 20px;padding:10px 16px;
+}
+.topbar-in{max-width:948px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.logo{width:40px;height:40px;border-radius:10px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;letter-spacing:.5px;flex:none}
+.brand{display:flex;flex-direction:column;min-width:0}
+.brand b{font-size:15px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand span{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang{margin-left:auto;display:flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;flex:none}
+.lang button{border:0;background:#fff;padding:6px 10px;font-size:12.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:background .12s}
+.lang button+button{border-left:1px solid var(--line)}
+.lang button.on{background:var(--accent);color:#fff}
+/* ---------- cards & generic ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin-bottom:16px}
+h1{font-size:24px;margin:0 0 6px;line-height:1.25}
+h2{font-size:18px;margin:0 0 12px}
+.sub{color:var(--muted);font-size:14px;margin:0 0 4px}
+.hidden{display:none !important}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid var(--line);background:#fff;color:var(--ink);
+  border-radius:11px;padding:12px 18px;font-size:15px;font-weight:600;cursor:pointer;
+  transition:transform .06s ease, box-shadow .12s ease, background .12s ease;
+  min-height:48px;touch-action:manipulation;user-select:none;
+}
+.btn:hover{background:#f6f8fb}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.btn:focus-visible,.ans:focus-visible,.gcell:focus-visible,.seg-btn:focus-visible,.lang button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-primary:hover{background:#1e4ab0}
+.btn-danger{color:var(--no);border-color:#f0c9c9}
+.btn-danger:hover{background:#fdf3f3}
+.btn-block{width:100%}
+.kbd{display:inline-block;border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;background:#f7f9fc;font-size:11px;font-weight:700;padding:0 5px;line-height:16px;color:var(--muted)}
+/* ---------- intro ---------- */
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-soft);color:var(--accent-dark);font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;margin-bottom:12px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0 4px}
+.fact{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.fact b{display:block;font-size:16px}
+.fact span{font-size:12px;color:var(--muted)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.wide{grid-column:1 / -1}
+.field label{font-size:13px;font-weight:600;color:#33415a}
+.field label .req{color:var(--no)}
+.field input,.field select,.field textarea{
+  border:1px solid var(--line);border-radius:10px;padding:11px 12px;font-size:15px;font-family:inherit;
+  background:#fff;color:var(--ink);min-height:46px;width:100%;
+}
+.field textarea{min-height:64px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+/* segmented control (sex picker) */
+.seg{display:flex;gap:8px}
+.seg-btn{
+  flex:1;min-height:46px;border:1.5px solid var(--line);border-radius:10px;background:#fff;
+  font-size:14.5px;font-weight:600;color:var(--ink);cursor:pointer;
+  transition:border-color .12s, background .12s, color .12s;touch-action:manipulation;user-select:none;
+}
+.seg-btn:hover{border-color:#b9c6d8;background:#fafcff}
+.seg-btn.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-dark)}
+.resume{border:1px solid #c7dbf7;background:var(--accent-soft);border-radius:12px;padding:14px 16px;margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.resume .r-txt{flex:1;min-width:180px;font-size:14px}
+.form-note{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+/* ---------- test ---------- */
+.progress-wrap{position:sticky;top:61px;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px;box-shadow:var(--shadow)}
+.progress-top{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);margin-bottom:8px;flex-wrap:wrap}
+.progress-top b{color:var(--ink);font-size:14px}
+.progress-top .spacer{flex:1}
+.bar{height:8px;border-radius:99px;background:#e6ebf2;overflow:hidden}
+.bar>div{height:100%;background:linear-gradient(90deg,var(--accent),#4d7ff0);border-radius:99px;transition:width .18s ease}
+.qcard{animation:fadein .18s ease}
+@keyframes fadein{from{opacity:.4;transform:translateY(3px)}to{opacity:1;transform:none}}
+.qnum{font-size:12.5px;font-weight:700;color:var(--accent);letter-spacing:.6px;text-transform:uppercase}
+.qtext{font-size:clamp(18px,2.6vw,23px);font-weight:650;line-height:1.42;margin:8px 0 20px}
+.answers{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ans{
+  border:1.5px solid var(--line);border-radius:13px;background:#fff;cursor:pointer;
+  padding:16px 10px;min-height:76px;display:flex;flex-direction:column;align-items:center;gap:6px;justify-content:center;
+  font-size:15.5px;font-weight:700;touch-action:manipulation;transition:border-color .1s, background .1s, transform .06s;
+}
+.ans .sym{font-size:21px;font-weight:800;line-height:1}
+.ans .hint{font-size:11px;color:var(--muted);font-weight:600}
+.ans-yes{color:var(--yes)} .ans-yes .sym{color:var(--yes)}
+.ans-mb{color:#a9790b} .ans-mb .sym{color:var(--mb)}
+.ans-no{color:var(--no)} .ans-no .sym{color:var(--no)}
+.ans:hover{border-color:#b9c6d8;background:#fafcff}
+.ans:active{transform:translateY(1px)}
+.ans.picked{border-color:currentColor;box-shadow:0 0 0 3px var(--accent-soft)}
+.ans.picked.ans-yes{background:var(--yes-soft)} .ans.picked.ans-mb{background:var(--mb-soft)} .ans.picked.ans-no{background:var(--no-soft)}
+.navrow{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.navrow .btn{flex:1;min-width:120px}
+.navrow .btn.gridbtn{flex:0 0 auto}
+.finishrow{margin-top:10px}
+.hintline{font-size:12.5px;color:var(--muted);margin-top:12px;text-align:center}
+/* ---------- grid modal ---------- */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:14px}
+.sheet{background:#fff;border-radius:16px;max-width:860px;width:100%;max-height:92vh;overflow:auto;padding:18px;box-shadow:0 24px 64px rgba(2,8,23,.35)}
+.sheet-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sheet-head h2{margin:0;font-size:16px}
+.sheet-head .btn{margin-left:auto;min-height:40px;padding:8px 14px}
+.glegend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:12px}
+.glegend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(46px,1fr));gap:6px}
+.gcell{
+  aspect-ratio:1;min-height:44px;border:1.5px solid var(--line);border-radius:8px;background:#f3f6fa;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#5b6b82;position:relative;
+  touch-action:manipulation;transition:background .1s, border-color .1s;
+}
+.gcell:hover{border-color:#b9c6d8}
+.gcell.a-plus{background:var(--yes-soft);border-color:var(--yes);color:var(--yes)}
+.gcell.a-mb{background:var(--mb-soft);border-color:var(--mb);color:#a9790b}
+.gcell.a-minus{background:var(--no-soft);border-color:var(--no);color:var(--no)}
+.gcell.cur{outline:2.5px solid var(--accent);outline-offset:1px;font-weight:800}
+.gcell.cur.a-plus{color:#1d7a44} .gcell.cur.a-mb{color:#8a6a10} .gcell.cur.a-minus{color:#a33}
+.gcell .mini{position:absolute;top:2px;right:4px;font-size:9px;opacity:.75;font-weight:700}
+/* ---------- results ---------- */
+.meta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.meta-item{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.meta-item span{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.meta-item b{font-size:14.5px;word-break:break-word}
+.status-row{display:flex;gap:10px;flex-wrap:wrap;align-items:stretch;margin-bottom:12px}
+.status-badge{flex:1;min-width:150px;border-radius:12px;padding:12px 14px;color:#fff;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.status-badge span{font-size:11.5px;opacity:.85;text-transform:uppercase;letter-spacing:.5px}
+.status-badge b{font-size:17px}
+.st-ok{background:#2e9e5b}.st-warn{background:#dd9a10}.st-bad{background:#d24949}
+.count-chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{flex:1;min-width:110px;border:1px solid var(--line);border-radius:11px;padding:10px 12px;background:#fff}
+.chip .c-top{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:var(--muted)}
+.chip b{font-size:19px}
+.chip .c-bar{height:5px;border-radius:99px;background:#edf1f6;margin-top:8px;overflow:hidden}
+.chip .c-bar>div{height:100%;border-radius:99px}
+.warnbox{margin-top:12px;border-radius:11px;padding:11px 14px 11px 16px;font-size:13.5px;line-height:1.45;border:1px solid;border-left-width:4px}
+.warnbox.w{background:var(--mb-soft);border-color:#eeda9e;border-left-color:var(--mb);color:#7a5a08}
+.warnbox.e{background:var(--no-soft);border-color:#efc4c4;border-left-color:var(--no);color:#8f2f2f}
+.warnbox.i{background:var(--accent-soft);border-color:#c7dbf7;border-left-color:var(--accent);color:var(--accent-dark)}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.res{width:100%;border-collapse:collapse;font-size:14px;min-width:520px}
+table.res th,table.res td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+table.res th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
+table.res td.num,table.res th.num{text-align:right;font-variant-numeric:tabular-nums}
+table.res .letter{font-weight:800;color:var(--accent-dark);width:28px}
+.zonetag{display:inline-block;border-radius:7px;padding:2px 9px;font-size:12px;font-weight:700}
+.z-ok{background:#e6f5ec;color:#1d7a44}.z-mid{background:var(--mb-soft);color:#8a6a10}.z-watch{background:#fdeedd;color:#a05a1c}.z-bad{background:var(--no-soft);color:#a33}
+.idx-plus{color:#1d7a44;font-weight:700}.idx-minus{color:#c0392b;font-weight:700}
+.exportrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+/* ---------- interpretation (detailed results) ---------- */
+.itp-note{font-size:13.5px;color:var(--muted);line-height:1.55;margin:0 0 16px;border-left:3px solid var(--accent);padding:2px 0 2px 12px;background:linear-gradient(90deg,var(--accent-soft),transparent 80%);border-radius:0 8px 8px 0}
+.itp-ov{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin:2px 0 14px}
+.itp-ov-item{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.itp-ov-item span{display:block;font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.itp-ov-item b{font-size:16px}
+.itp-ov-p{font-size:14px;line-height:1.62;margin:10px 0}
+.itp-h{font-size:14.5px;font-weight:700;margin:14px 0 6px;color:var(--ink)}
+.itp-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+.itp-chip{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:999px;padding:5px 12px 5px 6px;font-size:13px;background:#fff}
+.itp-chip .lc{width:24px;height:24px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;flex:none}
+.itp-chip .iv{font-variant-numeric:tabular-nums;font-weight:800}
+.itp-read{background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.55;color:#33415a;margin-top:12px}
+.itp-read b{display:block;margin-bottom:4px}
+.itp-card{border-left:4px solid var(--accent)}
+.itp-head{display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap;margin-bottom:12px}
+.itp-badge{width:46px;height:46px;border-radius:12px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;flex:none}
+.itp-title{flex:1;min-width:200px}
+.itp-title h3{margin:0;font-size:17px;line-height:1.3}
+.itp-title .poles{font-size:12.5px;color:var(--muted);font-weight:600}
+.itp-score{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-left:auto}
+.itp-idx{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;border-radius:9px;padding:4px 12px}
+.itp-about{font-size:13.5px;color:#33415a;line-height:1.6;background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:0 0 12px}
+.itp-about b{display:block;margin-bottom:3px;font-size:11.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.itp-level{display:inline-flex;align-items:center;gap:8px;border-radius:9px;padding:7px 12px;font-size:13.5px;font-weight:700;margin:0 0 10px}
+.itp-meaning{font-size:14.5px;line-height:1.65;margin:0 0 14px}
+.itp-cols{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-bottom:14px}
+.itp-list h4{margin:0 0 6px;font-size:12.5px;text-transform:uppercase;letter-spacing:.4px}
+.itp-list ul{margin:0;padding:0;list-style:none}
+.itp-list li{position:relative;padding-left:16px;margin:6px 0;font-size:14px;line-height:1.55}
+.itp-list li:before{content:"";position:absolute;left:2px;top:8px;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.75}
+.itp-l-plus h4{color:#1d7a44}.itp-l-plus{color:#2f5d46}
+.itp-l-minus h4{color:#a05a1c}.itp-l-minus{color:#6d4a22}
+.itp-l-tips h4{color:var(--accent-dark)}.itp-l-tips{color:#33415a}
+@media (max-width:640px){.itp-cols{grid-template-columns:1fr}.itp-score{flex-direction:row;align-items:center;margin-left:0;width:100%}}
+@media print{.itp-card{break-inside:avoid;page-break-inside:avoid}}
+/* ---------- confirm modal ---------- */
+.confirm-card{max-width:420px;width:100%}
+.confirm-card p{margin:0 0 18px;font-size:15px}
+.confirm-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+/* ---------- pdf fallback note ---------- */
+.small{font-size:12px;color:var(--muted)}
+/* ---------- responsive ---------- */
+@media (max-width:640px){
+  .card{padding:16px;border-radius:12px}
+  .form-grid{grid-template-columns:1fr}
+  .answers{grid-template-columns:1fr;gap:8px}
+  .ans{flex-direction:row;justify-content:flex-start;min-height:56px;padding:10px 14px;gap:12px}
+  .ans .sym{font-size:18px;width:26px;text-align:center}
+  .ans .hint{margin-left:auto}
+  .progress-wrap{top:57px}
+  .brand span{display:none}
+  h1{font-size:20px}
+  .seg{flex-direction:row}
+}
+@media (min-width:1600px){ .app{max-width:1120px} }
+@media print{ .topbar,.navrow,.exportrow,.finishrow{display:none !important} body{background:#fff} }
+
+/* ---------- done screen ---------- */
+.done-card{text-align:center;padding:44px 24px}
+.done-ico{width:64px;height:64px;margin:0 auto 16px;border-radius:50%;background:var(--yes-soft);color:var(--yes);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800}
+
+</style>
+</head>
+<body>
+<div class="topbar"><div class="topbar-in">
+  <div class="logo">OCA</div>
+  <div class="brand"><b id="tb-title">Oxford Capacity Analysis</b><span id="tb-sub">Тест анализа личности · 200 вопросов</span></div>
+  <div class="lang" role="group" aria-label="Language">
+    <button id="lang-ru" class="on">RU</button><button id="lang-en">EN</button><button id="lang-ro">RO</button>
+  </div>
+</div></div>
+
+<div class="app">
+
+  <!-- ============ SCREEN 1: intro / metadata ============ -->
+  <section id="screen-intro">
+    <div class="card" id="resume-box" style="border-color:#c7dbf7">
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:200px">
+          <b id="rs-title">Обнаружен незавершённый тест</b>
+          <div class="sub" id="rs-info">—</div>
+        </div>
+        <button class="btn btn-primary" id="btn-resume">Продолжить</button>
+        <button class="btn" id="btn-discard">Начать заново</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="hero-badge" id="in-badge">OCA-IP · 200 вопросов · 10 шкал</span>
+      <h1 id="in-title">Оксфордский тест анализа личности</h1>
+      <p class="sub" id="in-desc">Стандартизированный опросник: на каждый вопрос доступно три варианта ответа — «Да», «Может быть», «Нет». По результатам строится профиль личности по 10 шкалам (A–J), рассчитываются показатели достоверности и формируется PDF-отчёт. Работает полностью автономно, данные сохраняются только в вашем браузере.</p>
+      <div class="facts">
+        <div class="fact"><b>200</b><span id="in-f1">вопросов</span></div>
+        <div class="fact"><b>10</b><span id="in-f2">шкал личности A–J</span></div>
+        <div class="fact"><b>20–40</b><span id="in-f3">минут заполнение</span></div>
+        <div class="fact"><b>−100…+100</b><span id="in-f4">диапазон профиля</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 id="in-formtitle">Данные респондента</h2>
+      <div class="form-grid">
+        <div class="field wide">
+          <label for="f-name">ФИО / Псевдоним <span class="req">*</span></label>
+          <input id="f-name" type="text" maxlength="80" autocomplete="off" placeholder="Иванов Иван">
+        </div>
+        <div class="field">
+          <label for="f-age">Возраст <span class="req">*</span></label>
+          <input id="f-age" type="number" inputmode="numeric" min="10" max="120" step="1" placeholder="30">
+        </div>
+        <div class="field">
+          <label id="lbl-gender">Пол <span class="req">*</span></label>
+          <div class="seg" id="gender-row" role="radiogroup">
+            <button type="button" class="seg-btn" data-g="m" id="gb-male">Мужской</button>
+            <button type="button" class="seg-btn" data-g="f" id="gb-female">Женский</button>
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-date">Дата тестирования</label>
+          <input id="f-date" type="date">
+        </div>
+        <div class="field">
+          <label for="f-note">Примечание</label>
+          <input id="f-note" type="text" maxlength="120" placeholder="—">
+        </div>
+      </div>
+      <p class="form-note" id="in-note">Пол необходим для выбора корректной нормативной таблицы. Обязательные поля отмечены *</p>
+      <div style="margin-top:16px">
+        <button class="btn btn-primary btn-block" id="btn-start" disabled>Начать тест</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 2: test ============ -->
+  <section id="screen-test" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <b id="pg-label">Вопрос 1 из 200</b>
+        <span id="pg-answered">Отвечено: 0 (0%)</span>
+        <span class="spacer"></span>
+        <button class="btn" id="btn-grid" style="min-height:38px;padding:6px 12px;font-size:13px" aria-haspopup="dialog"><span id="pg-gridbtn">Матрица</span></button>
+      </div>
+      <div class="bar"><div id="pg-bar" style="width:0%"></div></div>
+    </div>
+
+    <div class="card qcard">
+      <div class="qnum" id="q-num">Вопрос 1</div>
+      <div class="qtext" id="q-text">…</div>
+      <div class="answers" id="answers">
+        <button class="ans ans-yes" id="a-yes"><span class="sym">+</span><span id="a-yes-t">ДА</span><span class="hint"><span class="kbd">1</span></span></button>
+        <button class="ans ans-mb" id="a-mb"><span class="sym">m</span><span id="a-mb-t">МОЖЕТ БЫТЬ</span><span class="hint"><span class="kbd">2</span></span></button>
+        <button class="ans ans-no" id="a-no"><span class="sym">−</span><span id="a-no-t">НЕТ</span><span class="hint"><span class="kbd">3</span></span></button>
+      </div>
+      <div class="navrow">
+        <button class="btn" id="btn-prev">← <span id="t-prev">Назад</span></button>
+        <button class="btn" id="btn-next"><span id="t-next">Вперед</span> →</button>
+      </div>
+      <div class="finishrow">
+        <button class="btn btn-primary btn-block" id="btn-finish" disabled>Завершить тест</button>
+      </div>
+      <div class="hintline" id="t-hint">Горячие клавиши: 1 · 2 · 3 — ответ, ← → — навигация</div>
+    </div>
+  </section>
+
+  <!-- ============ SCREEN 3: done (no results shown to the test taker) ============ -->
+  <section id="screen-done" class="hidden">
+    <div class="card done-card">
+      <div class="done-ico">&#10003;</div>
+      <h1 id="d-title">Тест завершён!</h1>
+      <p class="sub" id="d-text" style="max-width:560px;margin-left:auto;margin-right:auto"></p>
+      <p class="small" id="d-for" style="margin:10px 0 0;font-weight:700"></p>
+      <div style="max-width:420px;margin:24px auto 0">
+        <button class="btn btn-primary btn-block" id="btn-download" style="min-height:56px;font-size:16.5px"><span id="btn-download-t">Скачать результат</span></button>
+      </div>
+      <p class="small hidden" id="d-status" style="margin:14px 0 0;color:var(--yes);font-weight:600"></p>
+      <p class="small" id="d-note" style="margin:18px auto 0;max-width:540px"></p>
+      <p style="margin:30px 0 0"><a href="#" id="d-restart" class="small" style="color:var(--muted)">Пройти тест заново</a></p>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ grid modal ============ -->
+<div id="grid-overlay" class="overlay hidden" role="dialog" aria-modal="true" aria-label="Question grid">
+  <div class="sheet">
+    <div class="sheet-head">
+      <h2 id="g-title">Матрица вопросов</h2>
+      <button class="btn" id="btn-grid-close"><span id="g-close">Закрыть</span></button>
+    </div>
+    <div class="glegend" id="g-legend"></div>
+    <div class="ggrid" id="g-grid"></div>
+  </div>
+</div>
+
+<!-- ============ confirm modal ============ -->
+<div id="confirm-overlay" class="overlay hidden" role="dialog" aria-modal="true">
+  <div class="sheet confirm-card">
+    <p id="confirm-msg">—</p>
+    <div class="confirm-actions">
+      <button class="btn" id="confirm-cancel">Отмена</button>
+      <button class="btn btn-danger" id="confirm-ok">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* OCA data: 200 questions in RU|EN|RO with scale keys (normative tables live in the coach file) */
+var OCA_Q = [
+"Делаете ли Вы необдуманные замечания или обвинения, о которых Вы потом жалеете?|Do you make thoughtless remarks or accusations which you later regret?|Faceți observații sau acuzații pripite, nesocotite, de care regretați mai târziu?|A|2|4|6",
+"В то время, когда другие начинают терять терпение, остаетесь ли Вы достаточно спокойным?|When others begin to lose their patience, do you remain fairly calm?|Rămâneți destul de calm când alții încep să-și piardă răbdarea?|C|6|5|3",
+"Просматриваете ли Вы расписания движения поездов, телефонные справочники или словари ради удовольствия?|Do you browse train timetables, telephone directories or dictionaries just for pleasure?|Răsfoiți orare de tren, ghiduri telefonice sau dicționare doar pentru plăcere?|E|6|4|3",
+"Если Вас попросят принять какое-то решение, может ли Вас поколебать Ваше чувство расположения или нерасположения по отношению к человеку, о котором идет речь?|If you are asked to make a decision, could your liking or disliking of the person concerned sway you?|Dacă vi se cere să luați o decizie, vă poate influența simpatia sau antipatia față de persoana în cauză?|G|3|4|6",
+"Намереваетесь ли Вы иметь двух детей (или менее) в семье, даже если состояние Вашего здоровья и уровень доходов позволяют иметь больше детей?|Do you intend to have two children (or fewer) in your family, even if your health and income would allow more?|Intenționați să aveți doi copii (sau mai puțini) în familie, chiar dacă starea de sănătate și veniturile v-ar permite mai mulți?|I|4|4|5",
+"Сводит ли у Вас время от времени мышцы, даже когда для этого нет никакого логического объяснения?|Do your muscles sometimes cramp even when there is no logical explanation for it?|Vi se trag uneori mușchii (crampe), chiar dacă nu există nicio explicație logică?|C|3|3|6",
+"Вы предпочитаете находиться в ситуации, когда не приходится отвечать за принятие решений?|Do you prefer to be in situations where you do not have to take responsibility for decisions?|Preferați să fiți în situații în care nu trebuie să răspundeți de luarea deciziilor?|E|3|4|5",
+"Считают ли другие люди Ваши поступки непредсказуемыми?|Do other people consider your actions unpredictable?|Consideră ceilalți că acțiunile dumneavoastră sunt imprevizibile?|A|2|4|5",
+"Считаете ли Вы, что на социальное обеспечение должно расходоваться больше денежных средств?|Do you think more money should be spent on social welfare?|Credeți că ar trebui cheltuiți mai mulți bani pe asistența socială?|I|3|4|4",
+"Сильно ли Вас интересуют другие люди?|Are you strongly interested in other people?|Vă interesează puternic ceilalți oameni?|G|5|4|4",
+"Является ли Ваш голос скорее монотонным, чем гибким?|Is your voice monotonous rather than expressive?|Este vocea dumneavoastră mai degrabă monotonă decât expresivă?|C|3|4|5",
+"Ждете ли Вы обычно, чтобы другой человек начал разговор?|Do you usually wait for the other person to start a conversation?|Așteptați de obicei ca celălalt să înceapă conversația?|E|2|4|6",
+"Охотно ли Вы включаетесь в разговоры других людей?|Do you readily join in other people's conversations?|Vă alăturați cu ușurință conversațiilor altor oameni?|G|5|4|3",
+"Помешает ли Вам охотиться или ловить рыбу мысль о причинении боли дичи (птицам), маленьким животным или рыбам?|Would the thought of causing pain to birds, small animals or fish keep you from hunting or fishing?|Gândul de a provoca suferință păsărilor, animalelor mici sau peștilor v-ar împiedica să vânați sau să pescuiți?|I|2|4|5",
+"Часто ли бываете импульсивны в своем поведении?|Are you often impulsive in your behaviour?|Comportamentul dumneavoastră este adesea impulsiv?|A|3|3|6",
+"Медленно ли Вы говорите?|Do you speak slowly?|Vorbiți încet?|E|3|4|4",
+"Беспокоит ли Вас необходимость беречь здоровье?|Does the need to look after your health worry you?|Vă îngrijorează nevoia de a vă îngriji sănătatea?|A|2|4|5",
+"Вызывает ли у Вас напряжение мышц какое-нибудь неожиданное действие?|Does an unexpected action cause your muscles to tense?|O acțiune neașteptată vă încordează mușchii?|C|2|6|6",
+"Бываете ли Вы обычно тактичны в своих требованиях к подчиненным, родственникам, ученикам?|Are you usually tactful in your demands on subordinates, relatives or students?|Aveți de obicei tact în cerințele față de subordonați, rude sau elevi?|I|5|3|3",
+"Считаете ли Вы, что способны дать ценное \"моментальное суждение\"?|Do you think you are capable of a valuable 'snap judgment'?|Credeți că sunteți capabil de o judecată instantanee valoroasă?|G|5|5|3",
+"Беспокоят ли Вас до сих пор прошлые неудачи?|Do past failures still worry you?|Eșecurile din trecut vă preocupă și acum?|B|2|3|6",
+"Бывают ли у Вас периоды повышенной активности несколько дней подряд?|Do you have periods of heightened activity lasting several days in a row?|Aveți perioade de activitate intensă care durează mai multe zile la rând?|D|1|5|6",
+"Возмущают ли Вас усилия других людей указывать Вам, что Вы должны делать?|Are you resentful of other people's efforts to tell you what to do?|Vă deranjează eforturile altora de a vă spune ce să faceți?|F|5|4|3",
+"Трудно ли Вам обычно откровенно в чем-то признаться и взять на себя вину?|Is it usually hard for you to admit something openly and take the blame?|Vă este de obicei greu să recunoașteți ceva deschis și să vă asumați vina?|H|3|5|6",
+"Есть ли у Вас скорее небольшой круг близких друзей, чем большое количество приятелей, с которыми Вы просто можете поболтать?|Do you have a rather small circle of close friends rather than a large number of acquaintances you can simply chat with?|Aveți mai degrabă un cerc restrâns de prieteni apropiați decât un număr mare de cunoștințe cu care doar discutați?|J|3|1|5",
+"Является ли Ваша жизнь постоянной борьбой за выживание?|Is your life a constant struggle for survival?|Este viața dumneavoastră o luptă continuă pentru supraviețuire?|D|2|3|6",
+"Часто ли Вы напеваете или насвистываете?|Do you often hum or whistle to yourself?|Fredonați sau fluierați adesea pentru dumneavoastră înșivă?|B|5|4|4",
+"Считают ли Вас Ваши друзья сердечным отзывчивым человеком?|Do your friends consider you a warm-hearted, responsive person?|Vă consideră prietenii o persoană caldă, plină de suflet?|J|6|2|2",
+"Вы больше предпочитаете отдавать приказы, чем исполнять их?|Do you prefer giving orders to carrying them out?|Preferați să dați ordine decât să le executați?|F|6|3|3",
+"Доставляет ли Вам удовольствие рассказывать самые свежие сплетни о Ваших знакомых?|Do you enjoy telling the latest gossip about your acquaintances?|Vă place să povestiți cele mai noi clevetiri despre cunoștințele dumneavoastră?|H|3|4|6",
+"Согласились бы Вы на \"строгую дисциплину\"?|Would you agree to 'strict discipline'?|Ați fi de acord cu „disciplină strictă\"?|F|5|4|4",
+"Сильно ли Вас беспокоит мысль о том, что надо начать какое-то новое дело?|Does the thought of having to start something new greatly worry you?|Gândul că ar trebui să începeți ceva nou vă îngrijorează puternic?|D|2|4|6",
+"Пытаетесь ли Вы рассмешить других людей и заставить их улыбаться?|Do you try to make other people laugh and smile?|Încercați să faceți pe ceilalți să râdă și să zâmbească?|B|6|5|3",
+"Легко ли Вам выражать свои эмоции?|Is it easy for you to express your emotions?|Este ușor pentru dumneavoastră să vă exprimați emoțiile?|J|6|3|3",
+"Воздерживаетесь ли Вы от высказывания недовольства, если кто-то опоздал на встречу?|Do you refrain from expressing displeasure if someone is late for a meeting?|Vă abțineți să exprimați nemulțumirea dacă cineva întârzie la o întâlnire?|H|5|5|2",
+"Считают ли Вас иногда человеком, который портит настроение другим?|Do people sometimes consider you a person who spoils the mood of others?|Se întâmplă să fiți considerat o persoană care le strică dispoziția altora?|B|3|5|6",
+"Считаете ли Вы, что есть люди, которые явно недружелюбны по отношению к Вам и \"копают\" под Вас?|Do you believe there are people who are clearly unfriendly towards you and 'dig' against you?|Credeți că există oameni care sunt în mod clar ostili față de dumneavoastră și „plotonesc\" împotriva dumneavoastră?|H|3|4|6",
+"Можете ли Вы признать, что были неправы, только ради того, чтобы \"сохранить мир\"?|Can you admit you were wrong just to 'keep the peace'?|Puteți recunoaște că v-ați înșelat doar pentru a „menține pacea\"?|F|4|4|5",
+"Правда ли, что есть всего несколько человек, которых Вы любите по-настоящему?|Is it true that there are only a few people you truly love?|Este adevărat că doar câțiva oameni sunt cei pe care îi iubiți cu adevărat?|J|3|4|5",
+"Правда ли, что Вы редко бываете счастливы, если только для этого нет особой причины?|Is it true that you are rarely happy unless there is a special reason for it?|Este adevărat că sunteți rar fericit dacă nu există un motiv special pentru asta?|D|2|3|5",
+"Будучи в компании, активно ли Вы общаетесь с друзьями?|In company, do you actively socialize with friends?|În companie, socializați activ cu prietenii?|E|6|4|4",
+"Принимаете ли Вы разумные меры предосторожности, чтобы избежать несчастных случаев?|Do you take reasonable precautions to avoid accidents?|Luați măsuri de precauție rezonabile pentru a evita accidentele?|A|5|3|3",
+"Нервничаете ли Вы при мысли о том, что Вам предстоит выступать перед аудиторией?|Do you get nervous at the thought of speaking before an audience?|Vă emoționează gândul că ar trebui să vorbiți în fața unui public?|C|4|4|5",
+"Если бы Вы увидели в магазине товар, на котором явно по ошибке проставлена более низкая цена, попытались бы Вы приобрести его по этой цене?|If you saw an item in a shop clearly marked with a mistakenly low price, would you try to buy it at that price?|Dacă ați vedea într-un magazin un articol marcat în mod clar cu un preț scăzut din greșeală, ați încerca să-l cumpărați la acel preț?|I|2|3|6",
+"Часто ли Вы ощущаете, что люди смотрят на Вас или говорят о Вас за Вашей спиной?|Do you often feel that people are watching you or talking about you behind your back?|Simțiți adesea că oamenii vă privesc sau vorbesc despre dumneavoastră pe la spate?|G|3|4|5",
+"Правда ли, что Вы вечно попадаете в неприятности?|Is it true that you are forever getting into trouble?|Este adevărat că ajungeți mereu în necazuri?|A|3|3|5",
+"Есть ли нечто, что Вы особенно боитесь или не любите?|Is there something you are especially afraid of or dislike?|Există ceva de care vă este deosebit de frică sau ceva ce nu vă place?|C|2|5|6",
+"Правда ли, что Вы предпочитаете быть зрителем, нежели участником соревнований?|Is it true that you prefer to be a spectator rather than a participant in competitions?|Este adevărat că preferați să fiți spectator mai degrabă decât participant la competiții?|E|3|4|5",
+"Легко ли Вам относиться непредвзято к происшедшему?|Is it easy for you to be unprejudiced about what has happened?|Este ușor pentru dumneavoastră să fiți lipsit de prejudecăți față de ceea ce s-a întâmplat?|G|6|4|4",
+"Есть ли у Вас четкие устоявшиеся нормы вежливого поведения с членами Вашей семьи?|Do you have firm, established rules of polite behaviour with members of your family?|Aveți reguli ferme și stabile de comportament politicos față de membrii familiei dumneavoastră?|I|4|4|3",
+"Можете ли Вы быть \"заводилой\" на вечеринках?|Can you be the life of the party?|Puteți fi sufletul petrecerii?|E|5|4|2",
+"Стали бы Вы \"покупать вещи в кредит\" с надеждой, что сможете найти средства погашать этот кредит?|Would you 'buy things on credit' hoping you will find the means to pay it off?|Ați „cumpăra lucruri pe credit\", sperând că veți găsi mijloacele de a plăti?|A|3|4|4",
+"Бывает ли у Вас реакция после того, как произошло что-нибудь неожиданное, например, несчастный случай или другое неприятное происшествие?|Do you have a reaction after something unexpected happens, such as an accident or another unpleasant incident?|Aveți o reacție după ce se întâmplă ceva neașteptat, cum ar fi un accident sau alt incident neplăcut?|C|3|4|6",
+"Правда ли, что Вы больше считаетесь с интересами группы людей, нежели со своими личными интересами?|Is it true that you take the interests of a group more into account than your own personal interests?|Este adevărat că țineți cont mai mult de interesele grupului decât de interesele personale?|I|6|3|3",
+"Когда Вы слушаете лектора, посещает ли Вас иногда мысль, что лектор обращается исключительно к Вам?|When listening to a lecturer, do you sometimes get the idea that he is addressing you alone?|Când ascultați un prelector, vi se pare uneori că se adresează doar dumneavoastră?|G|2|5|6",
+"Посторонние шумы редко мешают Вам сосредоточиться?|Do extraneous noises rarely keep you from concentrating?|Zgomotele străine vă împiedică rar să vă concentrați?|C|5|3|3",
+"Всегда ли Вы \"в курсе дел\", происходящих ежедневно?|Are you always 'up to date' on the things that happen daily?|Sunteți întotdeauna „la curent\" cu lucrurile care se întâmplă zilnic?|E|5|4|4",
+"Умеете ли Вы уверенно запланировать что-нибудь и работать в направлении его реализации за шесть месяцев вперед?|Are you able to confidently plan something and work towards it six months ahead?|Puteți planifica cu încredere ceva și lucra în acest sens cu șase luni înainte?|A|6|3|3",
+"Считаете ли Вы, что современная система \"тюрьмы без решеток\" обречена на неудачу?|Do you think the modern 'prison without bars' system is doomed to failure?|Credeți că sistemul modern de „închisori fără gratii\" este condamnat la eșec?|I|1|3|5",
+"Имеете ли Вы склонность к тому, чтобы быть беззаботным и не тревожиться ни о чем?|Do you have a tendency to be carefree and to worry about nothing?|Aveți tendința de a fi netulburat și de a nu vă îngrijora de nimic?|G|2|5|6",
+"Бывает ли у Вас ощущение, что Вам все снится, когда все в жизни кажется нереальным?|Do you have the feeling that everything is a dream when everything in life seems unreal?|Aveți sentimentul că totul este un vis, când totul în viață pare nereal?|D|2|4|6",
+"Быстро ли Вы отходите от воздействия плохих новостей?|Do you recover quickly from bad news?|Vă recăpătați rapid după veștile proaste?|B|5|4|4",
+"Когда Вы критикуете кого-нибудь, пытаетесь ли Вы в то же самое время его подбодрить?|When you criticize someone, do you at the same time try to encourage them?|Când criticați pe cineva, încercați în același timp să-l încurajați?|H|5|4|4",
+"Считают ли Вас обычно холодным человеком?|Are you usually considered a cold person?|Sunteți de obicei considerat o persoană rece?|J|2|2|6",
+"Думаете ли Вы, что Ваши мнения недостаточно важны, чтобы сообщать их другим людям?|Do you think your opinions are not important enough to tell other people?|Credeți că opiniile dumneavoastră nu sunt destul de importante pentru a fi spuse altora?|F|4|4|5",
+"Являетесь ли Вы настолько самоуверенным, что это иногда раздражает других?|Are you so self-confident that it sometimes irritates others?|Sunteți atât de încrezător încât asta îi irită uneori pe ceilalți?|F|6|4|3",
+"Держите ли Вы \"в поле зрения\" вещи, которые Вы дали на время своим друзьям?|Do you keep 'in sight' the things you have lent to your friends for a while?|Urmăriți îndeaproape lucrurile pe care le-ați împrumutat prietenilor pentru o vreme?|D|2|4|5",
+"Доставляет ли Вам удовольствие деятельность, выбранная самостоятельно?|Do you enjoy an activity you have chosen yourself?|Vă place activitatea pe care ați ales-o singur?|B|6|4|3",
+"Оказывает ли на Вас сильное воздействие эмоциональная музыка?|Does emotional music have a strong effect on you?|Muzica emoțională are un efect puternic asupra dumneavoastră?|J|6|3|3",
+"Правда ли, что Вы полностью осуждаете человека из-за того, что он Ваш соперник или оппонент в каком-то вопросе Ваших с ним отношений?|Is it true that you completely condemn a person because he is your rival or opponent in some matter of your relations with him?|Este adevărat că condamnați complet o persoană doar pentru că este rivalul sau adversarul dumneavoastră în ceva?|H|4|4|5",
+"Часто ли Вы \"сидите и размышляете\" о смерти, болезни, боли и печали?|Do you often 'sit and brood' about death, illness, pain and sorrow?|Vă cufundați adesea în gânduri despre moarte, boală, durere și suferință?|B|3|5|6",
+"Беспокоит ли Вас мысль о потере чувства собственного достоинства?|Does the thought of losing your self-respect worry you?|Vă îngrijorează gândul de a vă pierde stima de sine?|F|3|4|4",
+"Верно ли, что Вы постоянно собираете вещи, которые \"смогли бы впоследствии пригодиться\"?|Is it true that you constantly collect things that 'might come in handy later'?|Este adevărat că adunați constant lucruri care „ar putea fi utile mai târziu\"?|D|2|4|5",
+"Стали бы Вы критиковать недостатки и указывать человеку на плохие черты его характера или на плохо сделанную им работу?|Would you criticize faults and point out to a person his bad character traits or a badly done piece of work?|Ați critica defectele și i-ați arăta cuiva trăsăturile proaste de caracter sau o lucrare prost făcută?|H|2|4|6",
+"Открыто ли Вы выражаете свое восхищение красивыми вещами?|Do you openly express your admiration for beautiful things?|Exprimați deschis admirația pentru lucrurile frumoase?|J|5|3|3",
+"Бывает ли, что Вы отдаете вещи, которые, строго говоря, Вам не принадлежат?|Does it happen that you give away things which, strictly speaking, do not belong to you?|Se întâmplă să dați lucruri care, strict vorbind, nu vă aparțin?|D|1|3|6",
+"Эмоционально ли Вы приветствуете людей?|Do you greet people emotionally?|Salutați oamenii cu emoție?|J|6|2|2",
+"Часто ли Вы размышляете о неудачах прошлого?|Do you often dwell on the failures of the past?|Vă întoarceți adesea cu gândul la eșecurile din trecut?|B|2|5|6",
+"Считают ли Вас иногда властным человеком в Ваших действиях и взглядах?|Are you sometimes considered a domineering person in your actions and views?|Sunteți uneori considerat o persoană dominatoare în acțiuni și opinii?|F|5|4|3",
+"Легко ли и без обид воспринимаете критику?|Do you take criticism easily and without resentment?|Primiți cu ușurință și fără resentimente critica?|H|6|3|3",
+"Обычно Вас не беспокоит \"полная тишина\", когда Вы хотите отдохнуть?|Are you usually undisturbed by 'complete silence' when you want to rest?|„Liniștea completă\" nu vă tulbură de obicei când vreți să vă odihniți?|C|6|3|3",
+"Склонны ли Вы быть ревнивым?|Are you inclined to be jealous?|Aveți tendința de a fi gelos?|G|3|4|6",
+"Правда ли, что Вы склонны откладывать что-то на потом, а затем обнаруживается, что уже слишком поздно?|Is it true that you tend to put things off, and then find it is already too late?|Este adevărat că aveți tendința să amânați și apoi descoperiți că este deja prea târziu?|A|3|3|6",
+"Верно ли, что Вы предпочитаете действовать в соответствии с пожеланиями других, чем стремитесь делать все по-своему?|Is it true that you prefer to act according to the wishes of others rather than insist on doing everything your own way?|Este adevărat că preferați să acționați potrivit dorințelor altora, decât să insistați să faceți totul pe stilul dumneavoastră?|I|6|3|2",
+"Легко ли Вам начать выполнение какого-либо дела?|Is it easy for you to begin carrying out some task?|Este ușor pentru dumneavoastră să începeți executarea unei sarcini?|E|6|3|3",
+"Есть ли у Вас привычка грызть свои ногти или кончик карандаша?|Do you have a habit of biting your nails or the tip of a pencil?|Aveți obiceiul să vă roadeți unghiile sau vârful creionului?|C|2|4|6",
+"Бывает ли так, что для создания какого-то эффекта Вы увеличиваете степень выражения своих эмоций?|Does it happen that, to create an effect, you exaggerate the expression of your emotions?|Se întâmplă să exagerați expresia emoțiilor pentru a produce un efect?|A|3|3|5",
+"Если бы Ваша страна вторглась в другую страну, сочувствовали бы Вы тем ее гражданам, которые отказались от военной службы по политическим или религиозным убеждениям?|If your country invaded another country, would you sympathize with its citizens who refused military service on political or religious grounds?|Dacă țara dumneavoastră ar invada o altă țară, v-ar simpatiza cetățenii care refuză serviciul militar din motive politice sau religioase?|I|5|4|3",
+"Есть ли у Вас чувствительные места, затрагивание которых вызывает Вашу болезненную реакцию?|Do you have sore spots which, when touched, cause a painful reaction in you?|Aveți puncte dureroase care, la atingere, vă provoacă o reacție de durere?|G|2|5|6",
+"Правда ли, что у Вас небольшой круг интересов и видов деятельности, которыми Вы занимаетесь по собственному выбору?|Is it true that you have a small circle of interests and activities of your own choosing?|Este adevărat că aveți un cerc restrâns de interese și activități alese de dumneavoastră?|E|3|3|5",
+"Бывает ли так, что у Вас появляется мысль, овладевающая Вашим сознанием на несколько дней?|Does it happen that a thought appears in your mind and takes possession of it for several days?|Se întâmplă ca un gând să apară în mintea dumneavoastră și să o stăpânească câteva zile?|C|3|4|6",
+"Медленно ли Вы едите?|Do you eat slowly?|Mâncați încet?|E|3|4|4",
+"Можете ли Вы оказать стабилизирующее воздействие, когда другие начинают паниковать?|Can you have a stabilizing effect when others begin to panic?|Puteți avea un efect stabilizator când alții încep să se panicheze?|A|5|3|3",
+"Остановитесь ли Вы и попытаетесь узнать, нужна ли человеку помощь, если ее непосредственно не попросили?|Would you stop and try to find out whether a person needs help if you were not asked directly?|V-ați opri să aflați dacă o persoană are nevoie de ajutor, chiar dacă nu v-a fost cerut direct?|I|5|4|4",
+"Склонны ли Вы думать, что Ваша школа, колледж, клуб, коллектив и т.п. лучше других?|Are you inclined to think your school, college, club, team, etc. is better than others?|Sunteți înclinat să credeți că școala, facultatea, clubul sau echipa dumneavoastră este mai bună decât altele?|G|3|4|5",
+"Оплачиваете ли Вы свои долги и сдерживаете ли Вы свои обещания, если это возможно?|Do you pay your debts and keep your promises whenever possible?|Plătiți datoriile și vă țineți promisiunile ori de câte ori este posibil?|A|6|4|2",
+"Хорошо ли Вы спите?|Do you sleep well?|Dormiți bine?|C|5|5|3",
+"Примените ли Вы телесное наказание к ребенку в возрасте 10 лет, если бы он отказался Вас слушаться?|Would you apply corporal punishment to a 10-year-old child if he refused to obey you?|Ați aplica pedepse fizice unui copil de 10 ani dacă ar refuza să vă asculte?|I|4|4|5",
+"Предпочитаете ли Вы занимать пассивную роль в любой группе или организации, к которой принадлежите?|Do you prefer to take a passive role in any group or organization you belong to?|Preferați să jucați un rol pasiv în orice grup sau organizație de care aparțineți?|E|2|4|5",
+"Присутствует ли логика и научный подход в Вашем образе мыслей?|Is there logic and a scientific approach in your way of thinking?|Există logică și o abordare științifică în felul dumneavoastră de a gândi?|G|4|3|1",
+"Верно ли, что современная молодежь имеет больше возможностей, чем молодежь предыдущего поколения?|Is it true that today's youth have more opportunities than the youth of the previous generation?|Este adevărat că tineretul de astăzi are mai multe oportunități decât tineretul generației precedente?|B|5|4|4",
+"Бывает ли так, что Вы выбрасываете свои вещи, а позже обнаруживаете их необходимость?|Does it happen that you throw things away and later discover they were needed?|Se întâmplă să aruncați lucruri și să descoperiți mai târziu că erau necesare?|D|2|3|5",
+"Легко ли Вы отказались бы от выбранного направления действий, если бы оно причинило Вам незначительные затруднения?|Would you easily give up a chosen course of action if it caused you a small number of difficulties?|Ați renunța cu ușurință la o direcție de acțiune aleasă, dacă v-ar cauza dificultăți neînsemnate?|F|4|4|6",
+"Верно ли то, что Вас сильно волнуют только некоторые определенные темы?|Is it true that only certain definite subjects strongly concern you?|Este adevărat că doar anumite subiecte precise vă preocupă puternic?|J|2|3|6",
+"Правда ли, что Вы редко подвергаете сомнениям поступки других людей?|Is it true that you rarely question the actions of other people?|Este adevărat că puneți rar sub semnul întrebării acțiunile altor oameni?|H|6|4|3",
+"Верно ли, что иногда Вы спрашиваете себя о том, заботиться ли о Вас кто-то по-настоящему?|Is it true that you sometimes ask yourself whether anyone truly cares about you?|Este adevărat că uneori vă întrebați dacă pe cineva îi pasă cu adevărat de dumneavoastră?|B|2|3|7",
+"Отказываетесь ли Вы от ответственности за что-либо из-за Ваших сомнений, что Вы можете с этим не справиться?|Do you refuse responsibility for something because of your doubts that you can cope with it?|Refuzați responsabilitatea pentru ceva din cauza îndoielilor că ați face față?|F|2|3|6",
+"Чувствуете ли Вы, что иногда Вы должны повторять несколько раз какую-то интересную новость или слух?|Do you feel that sometimes you must repeat some interesting news or rumour several times?|Simțiți că uneori trebuie să repetați de mai multe ori o veste interesantă sau un zvon?|D|3|4|5",
+"Имеете ли Вы склонность преувеличивать оправданную обиду?|Do you tend to exaggerate a justified offence?|Aveți tendința de a exagera o jignire justificată?|H|3|4|5",
+"Правда ли, что выражение вашего лица скорее изменчиво, чем постоянно?|Is it true that the expression of your face is changeable rather than constant?|Este adevărat că expresia feței dumneavoastră este mai degrabă schimbătoare decât constantă?|J|5|4|4",
+"Нуждаетесь ли Вы обычно в подтверждении или отказе от однажды высказанного Вами мнения?|Do you usually need confirmation or retraction of an opinion you once expressed?|Vă trebuie de obicei confirmarea sau retractarea unei opinii exprimate o dată?|D|2|4|5",
+"Восхищаетесь ли Вы открыто и искренне красотой других людей?|Do you openly and sincerely admire the beauty of other people?|Admirați deschis și sincer frumusețea altor oameni?|J|6|2|2",
+"Трудно ли Вам рассматривать предмет самоубийства?|Is it hard for you to consider the subject of suicide?|Vă este greu să vă gândiți la subiectul sinuciderii?|B|6|4|3",
+"Считаете ли Вы себя энергичным в Вашем отношении к жизни?|Do you consider yourself energetic in your attitude to life?|Vă considerați o persoană energetică în atitudinea față de viață?|F|6|4|3",
+"Может ли расхождение во мнениях повлиять на Ваши общие отношения с другим человеком?|Can a difference of opinion affect your overall relationship with another person?|O diferență de opinie poate afecta relația generală cu o altă persoană?|H|3|4|6",
+"Правда ли, что Ваши незначительные неудачи редко Вас беспокоят?|Is it true that your minor failures rarely trouble you?|Este adevărat că eșecurile minore ale dumneavoastră vă tulbură rar?|B|6|4|3",
+"Иногда Вы чувствуете, что говорите слишком много?|Do you sometimes feel you talk too much?|Se întâmplă să simțiți că vorbiți prea mult?|D|3|4|5",
+"Часто ли Вы улыбаетесь?|Do you often smile?|Zâmbiți adesea?|J|7|2|2",
+"Являетесь ли Вы тем человеком, которому легко доставить удовольствие?|Are you a person who is easy to please?|Sunteți o persoană ușor de mulțumit?|H|5|4|3",
+"Когда Вы встречаете открытое сопротивление, попытаетесь ли все-таки сделать что-то по-своему?|When you meet open resistance, will you still try to have things your way?|Când întâmpinați rezistență deschisă, veți încerca totuși să obțineți ce vă doriți?|F|5|4|3",
+"Если расстояние не слишком большое, Вы предпочитаете ехать на транспорте, нежели идти пешком?|If the distance is not too great, do you prefer to ride rather than walk?|Dacă distanța nu este prea mare, preferați să mergeți cu vehiculul decât pe jos?|E|4|4|5",
+"Беспокоит ли Вас когда-нибудь шум ветра или \"осаживающегося дома\"?|Do noises such as the wind or a 'settling house' ever bother you?|Vă deranjează zgomote precum vântul sau „casa care trosnește\"?|C|3|4|6",
+"Оказывает ли влияние на формирование Вашего мнения взгляд на вещи с позиции Вашего жизненного опыта, профессии, образования?|Does your view of things, based on your life experience, profession or education, influence the formation of your opinion?|Punctul dumneavoastră de vedere, bazat pe experiența de viață, profesie sau educație, influențează formarea opiniei dumneavoastră?|G|5|4|3",
+"Часто ли совершаете бестактные ошибки?|Do you often make tactless mistakes?|Faceți adesea greșeli lipsite de tact?|A|2|3|6",
+"Относитесь ли Вы с подозрением к людям, которые просят у Вас денег взаймы?|Do you regard with suspicion people who ask to borrow money from you?|Priviți cu suspiciune oamenii care vă cer bani împrumut?|I|1|3|4",
+"Оказывают ли влияние на Ваши решения Ваши личные интересы?|Do your personal interests have an influence on your decisions?|Interesele personale influențează deciziile dumneavoastră?|G|4|4|6",
+"Можете ли Вы прийти в восторг от какой-нибудь \"простой мелочи\"?|Can you be thrilled by some 'simple little thing'?|Vă poate emoționa profund un „lucru simplu și mărunți\"?|E|5|4|4",
+"Часто ли Вы предпринимаете действия, несмотря на то, что Ваш собственный здравый смысл указывает на обратное?|Do you often take action even though your own common sense points the other way?|Acționați adesea chiar dacă bunul simț propriu vă spune contrariul?|A|3|4|6",
+"Являетесь ли Вы сторонником разделения людей по цвету кожи и классовой принадлежности?|Are you an advocate of dividing people by colour of skin and class?|Susțineți împărțirea oamenilor după culoarea pielii și după clasă?|I|2|5|6",
+"Присущи ли Вам привычки, подобные поглаживанию волос, носа, ушей и т.п.?|Do you have habits such as stroking your hair, nose, ears, etc.?|Aveți obiceiuri precum netezirea părului, nasului, urechilor etc.?|C|3|5|6",
+"Можете ли Вы быстро приспособиться и воспользоваться новыми условиями и ситуациями, даже если они могут оказаться трудными?|Can you quickly adapt to and take advantage of new conditions and situations, even if they may turn out difficult?|Vă puteți adapta rapid la condiții și situații noi și le puteți folosi în avantaj, chiar dacă se pot dovedi dificile?|A|5|3|2",
+"Могут ли некоторые звуки вызывать у Вас крайне неприятные ощущения, такие, будто \"зубы сводит\"?|Can some sounds cause you an extremely unpleasant sensation, as if 'your teeth are set on edge'?|Pot unele sunete să vă provoace o senzație extrem de neplăcută, ca și cum „vi s-ar chiori dinții\"?|C|2|4|6",
+"Можете ли Вы понять точку зрения другого человека, если Вы этого захотите?|Can you understand another person's point of view if you want to?|Puteți înțelege punctul de vedere al altei persoane dacă doriți?|G|6|4|3",
+"Вы ложитесь спать скорее когда хотите, нежели по часам?|Do you go to bed rather when you feel like it than by the clock?|Mergeți la culcare mai degrabă când simțiți nevoia, decât după ceas?|E|4|4|3",
+"Теряете ли Вы терпение из-за \"мелких недостатков\" других людей?|Do you lose patience over the 'small faults' of other people?|Pierdeți răbdarea din cauza „defectelor mici\" ale altor oameni?|I|2|4|5",
+"Раздражают ли Вас дети?|Do children irritate you?|Copiii vă irită?|C|3|5|5",
+"Вы менее разговорчивы, чем Ваши знакомые?|Are you less talkative than your acquaintances?|Sunteți mai puțin vorbăreț decât cunoștințele dumneavoastră?|E|3|3|6",
+"Выполняете ли Вы обычно поручения быстро и систематично?|Do you usually carry out assignments quickly and systematically?|Executați de obicei însărcinările rapid și sistematic?|A|5|3|3",
+"Оказали ли бы Вы помощь попутчику, нежели предоставили бы это официальным лицам?|Would you help a fellow traveller rather than leave it to the officials?|Ați ajuta un coleg de drum, mai degrabă decât să lăsați asta în seama oficialilor?|I|5|4|4",
+"Когда Вы голосуете, голосуете ли Вы за одну и ту же партию вместо того, чтобы изучить кандидатов и их предвыборные программы?|When you vote, do you vote for the same party instead of studying the candidates and their programmes?|Când votați, votați pentru același partid, în loc să studiați candidații și programele lor?|G|2|5|6",
+"Часто ли Вы размышляете о своих прошлых болезнях и болезненных переживаниях?|Do you often dwell on your past illnesses and painful experiences?|Vă întoarceți adesea cu gândul la bolile și experiențele dureroase din trecut?|B|2|5|6",
+"Становится ли Вам совсем не по себе, если вокруг беспорядок?|Does disorder around you make you feel quite uneasy?|Dezordinea din jurul dumneavoastră vă tulbură destul de mult?|D|1|3|5",
+"Критикуете ли Вы обычно фильм или спектакль, который Вы смотрите, или книгу, которую Вы читаете?|Do you usually criticize a film or play you are watching, or a book you are reading?|Criticați de obicei filmul sau piesa pe care o vizionați, sau cartea pe care o citiți?|H|2|4|6",
+"Рассказывая какой-нибудь забавный случай, можете ли Вы легко подражать манерам или речи участников этого случая?|Telling some amusing incident, can you easily imitate the manners or speech of the people in it?|Povestind un episod amuzant, puteți imita cu ușurință manierele sau vorbirea persoanelor din el?|J|5|4|3",
+"В тех областях, где Вы не являетесь специалистом, является ли Ваше мнение достаточно важным, чтобы высказывать его другим людям?|In fields where you are not a specialist, is your opinion important enough to express to other people?|În domenii în care nu sunteți specialist, opinia dumneavoastră este suficient de importantă pentru a fi exprimată altora?|F|5|5|3",
+"Склонны ли Вы прибираться в чужом доме, если там беспорядок?|Are you inclined to tidy up in someone else's home if there is disorder?|Sunteți înclinat să faceți ordine în casa altcuiva dacă acolo e dezordine?|D|1|3|5",
+"Легко ли Вам смириться с поражением, при этом не испытывая чувства досады?|Is it easy for you to accept defeat without feeling vexed?|Este ușor pentru dumneavoastră să acceptați înfrângerea fără a vă simți vexat?|F|6|4|4",
+"Часто ли Вы чувствуете себя подавленным?|Do you often feel depressed?|Vă simțiți adesea deprimat?|B|3|4|6",
+"Бывает ли Вам неловко в обществе детей?|Do you feel awkward in the company of children?|Vă simțiți stânjenit în compania copiilor?|J|3|5|5",
+"Расстраиваетесь ли Вы, если не можете что-то сделать, вместо того, чтобы найти замену этой деятельности?|Do you get upset if you cannot do something, instead of finding a substitute for that activity?|Vă întristați dacă nu puteți face ceva, în loc să găsiți un înlocuitor pentru acea activitate?|H|2|5|6",
+"Бываете ли Вы иногда не в состоянии полностью постичь суть вещей?|Does it happen that you are sometimes unable to fully grasp the essence of things?|Se întâmplă să nu puteți cuprinde pe deplin esența lucrurilor?|B|2|5|6",
+"Редко ли Вы выражаете свое недовольство?|Do you rarely express your displeasure?|Exprimați rar nemulțumirea?|H|6|5|3",
+"Работаете ли Вы \"рывками\", будучи относительно пассивным, а затем чрезмерно активным в течение одного-двух дней?|Do you work 'in spurts', being relatively passive and then excessively active for a day or two?|Munciți „în rafale\", fiind relativ pasiv și apoi excesiv de activ o zi sau două?|D|2|4|6",
+"Беспокоит ли Вас определенное количество незавершенных текущих дел?|Are you worried by a certain number of unfinished current affairs?|Vă îngrijorează un anumit număr de afaceri curente neterminate?|F|3|3|5",
+"Нравится ли людям быть в Вашем обществе?|Do people like to be in your company?|Oamenilor le place să fie în compania dumneavoastră?|J|7|1|1",
+"Можете ли Вы не вмешиваться при окончании решения кроссворда другим человеком?|Can you refrain from interfering when another person is completing a crossword solution?|Vă puteți abține de la a interveni când altcineva completează rezolvarea unui rebus?|D|6|4|2",
+"Считаетесь ли Вы с лучшими сторонами большинства людей и лишь редко отзываетесь неуважительно о них?|Do you take into account the best sides of most people and only rarely speak disrespectfully of them?|Luați în considerare laturile bune ale majorității oamenilor și vorbiți despre ei fără respect doar rar?|H|7|5|2",
+"Охотно ли Вы смеетесь или улыбаетесь?|Do you readily laugh or smile?|Râdeți sau zâmbiți cu ușurință?|B|5|5|3",
+"Являются ли Ваш голос и манеры определенными и выразительными?|Are your voice and manners definite and expressive?|Vocea și manierele dumneavoastră sunt hotărâte și expresive?|F|5|4|2",
+"Проявляете ли Вы свою несдержанность только по отношению к близким друзьям, если Вы вообще ее проявляете?|Do you show your lack of restraint only towards close friends, if you show it at all?|Arătați lipsa de stăpânire de sine doar prietenilor apropiați, dacă o arătați deloc?|J|2|2|6",
+"Представляют ли Ваши интересы и области знаний для Вас такую важность, что оставляют Вам мало времени для чего-нибудь другого?|Are your interests and fields of knowledge of such importance to you that they leave you little time for anything else?|Interesele și domeniile de cunoștințe vă sunt atât de importante încât vă lasă puțin timp pentru orice altceva?|G|2|5|6",
+"Хотелось бы Вам начать \"новое дело\" рядом с тем местом, где Вы живете?|Would you like to start a 'new venture' near the place where you live?|Ați dori să începeți o „afacere nouă\" lângă locul unde locuiți?|E|6|4|3",
+"Предпримите ли Вы необходимые действия с целью убить животное для того, чтобы избавить его от боли?|Would you take the necessary action to kill an animal in order to relieve it of pain?|Ați lua măsurile necesare pentru a ucide un animal, pentru a-l elibera de durere?|I|5|4|4",
+"Легко ли Вам расслабиться?|Is it easy for you to relax?|Este ușor pentru dumneavoastră să vă relaxați?|C|5|5|2",
+"Вы мало сожалеете о прошлых невзгодах и неудачах?|Do you have few regrets about past hardships and failures?|Aveți puține regrete despre greutățile și eșecurile din trecut?|A|6|3|3",
+"Вызывают ли у Вас физическую реакцию мрачные предчувствия или мысль о страхе?|Do dark forebodings or fearful thoughts cause a physical reaction in you?|Premonițiile sumbre sau gândurile înspăimântătoare vă provoacă o reacție fizică?|C|3|3|6",
+"Можете ли Вы положиться на то, что подсказывает Ваш здравый смысл в эмоциональной ситуации, в которую Вы попали?|Can you rely on what your common sense tells you in an emotional situation you find yourself in?|Puteți conta pe ceea ce vă spune bunul simț într-o situație emoțională în care vă aflați?|G|6|4|2",
+"Мог бы кто-то еще считать Вас по-настоящему активным?|Could someone else consider you truly active?|Ar putea considera altcineva că sunteți cu adevărat activ?|E|6|4|3",
+"Трудно ли Вам приступить к делу, которое необходимо выполнить?|Is it hard for you to get started on a task that needs to be done?|Vă este greu să începeți o sarcină care trebuie făcută?|A|2|3|6",
+"Являетесь ли Вы противником \"системы испытательных сроков\" в отношении преступников?|Are you an opponent of the 'probation system' for criminals?|Sunteți împotriva sistemului de „liberare la probă\" pentru infractori?|I|3|4|5",
+"Тратите ли Вы много времени на беспокойство по пустякам?|Do you spend a lot of time worrying over trifles?|Cheltuiți mult timp îngrijorându-vă pentru fleacuri?|C|3|3|6",
+"Во время спора трудно ли Вам понять, почему другой человек не может принять Вашу точку зрения и, таким образом, согласиться с Вами?|In an argument, is it hard for you to understand why the other person cannot accept your point of view and thus agree with you?|Într-o dispută, vă este greu să înțelegeți de ce celălalt nu poate accepta punctul dumneavoastră de vedere și să fie de acord cu dumneavoastră?|G|3|4|6",
+"Достаточно ли хорошо Вы справляетесь с проблемами повседневной жизни?|Do you cope well enough with the problems of everyday life?|Faceți față suficient de bine problemelor vieții de zi cu zi?|A|6|3|2",
+"Бываете ли Вы обычно правдивы с окружающими?|Are you usually truthful with the people around you?|Sunteți de obicei sincer cu oamenii din jurul dumneavoastră?|I|5|4|3",
+"Вы предпочитаете ждать развития событий вместо того, чтобы начать действовать самому?|Do you prefer to wait for events to develop instead of starting to act yourself?|Preferați să așteptați evoluția evenimentelor în loc să începeți singur să acționați?|E|0|1|5",
+"Так же легко Вы тратите деньги, как их зарабатываете?|Do you spend money as easily as you earn it?|Cheltuiți banii la fel de ușor pe cât îi câștigați?|A|2|2|6",
+"Способны ли Вы пойти на \"обоснованный риск\" без особых волнений?|Are you capable of taking a 'calculated risk' without much agitation?|Sunteți capabil să vă asumați un „risc calculat\" fără o mare agitație?|C|6|4|4",
+"Если бы Вы попали в незначительную автомобильную аварию, потрудились бы Вы позаботиться, чтобы ущерб, причиненный Вами, был возмещен?|If you were involved in a minor car accident, would you take care to see that the damage you caused was compensated?|Dacă ați fi implicat într-un accident auto minor, v-ar asigura că daunele provocate sunt compensate?|I|5|3|3",
+"Другие люди помыкают Вами?|Do other people push you around?|Vă țin alții după deget?|E|0|1|5",
+"Проявляете ли Вы снисходительность к своим друзьям в тех случаях, когда к другим Вы отнеслись бы более строго?|Are you lenient towards your friends in cases where you would be stricter with others?|Sunteți îngăduitor cu prietenii în cazuri în care cu alții ați fi mai strict?|G|3|5|6",
+"Часто ли размышляете о своей неполноценности?|Do you often dwell on your own inferiority?|Vă cufundați adesea în propriile sentimente de inferioritate?|B|3|3|6",
+"Бывает ли так, что люди критикуют Вас в разговоре с другими людьми?|Does it happen that people criticize you when talking with other people?|Se întâmplă ca oamenii să vă critice atunci când vorbesc cu alte persoane?|H|3|4|6",
+"Смущают ли Вас проявления сердечности при встрече, такие как поцелуй, крепкое объятие, похлопывание по спине, если это происходит на людях?|Are you embarrassed by displays of warmth on meeting, such as a kiss, a firm embrace or a slap on the back, if it happens in public?|Vă stinghenesc manifestările de căldură la întâlnire, precum un sărut, o îmbrățișare strânsă sau o palmă pe spate, dacă se întâmplă în public?|J|2|4|6",
+"Часто ли Вам приходится не делать то, что хотелось бы, считаясь с желаниями других людей?|Do you often have to refrain from doing what you would like, out of consideration for the wishes of others?|Trebuie adesea să vă abțineți de la a face ceea ce ați dori, din considerație pentru dorințele altora?|D|3|4|6",
+"Часто ли Вы убеждены в правильности Вашей точки зрения о предмете, даже если Вы не являетесь специалистом по данному вопросу?|Are you often convinced of the correctness of your point of view on a subject, even if you are not a specialist in it?|Sunteți adesea convins de corectitudinea punctului dumneavoastră de vedere, chiar dacă nu sunteți specialist în acel subiect?|F|6|6|3",
+"Часто ли Вы оказываетесь в ситуациях, когда Вам приходится \"заниматься всеми делами\" одновременно (\"работать на несколько фронтов\")?|Do you often find yourself in situations where you have to 'do everything at once' ('work on several fronts')?|Ajungeți adesea în situații în care trebuie să „faceți totul deodată\" („să munciți pe mai multe fronturi\")?|D|1|3|5",
+"Кажется ли Вам, что Ваши знакомые более высокого мнения о Ваших способностях, чем Вы сами?|Does it seem to you that your acquaintances have a higher opinion of your abilities than you do yourself?|Vi se pare că cunoștințele au o părere mai bună despre abilitățile dumneavoastră decât aveți dumneavoastră însumi?|F|3|3|5",
+"Ужасает ли Вас мысль о смерти или даже напоминание о ней?|Does the thought of death, or even a reminder of it, horrify you?|Gândul la moarte, sau chiar amintirea ei, vă înspăimântă?|B|2|2|6",
+"Урегулировав спорный вопрос, продолжаете ли Вы чувствовать недовольство какое-то время?|Having settled a disputed question, do you continue to feel displeased for some time?|După ce ați rezolvat o problemă disputată, continuați o vreme să vă simțiți nemulțumit?|H|3|5|5",
+"Есть ли дружелюбие в Вашем голосе, отношении и выражении лица?|Is there friendliness in your voice, manner and facial expression?|Există prietenie în vocea, manierele și expresia feței dumneavoastră?|J|6|2|2",
+"Кажется ли Вам жизнь нереальной и довольно смутной?|Does life seem unreal and rather vague to you?|Viața vi se pare nereală și destul de vagă?|D|1|4|5",
+"Часто ли Вы расстраиваетесь из-за судьбы жертв войны и политических беженцев?|Do you often get distressed over the fate of war victims and political refugees?|Vă tulburați adesea de soarta victimelor războiului și a refugiaților politici?|B|2|4|6",
+"Обращаются ли к Вам за помощью или советом \"просто знакомые\" со своими личными проблемами?|Do 'mere acquaintances' come to you for help or advice about their personal problems?|„Cunoștințele obișnuite\" vin la dumneavoastră pentru ajutor sau sfat în problemele lor personale?|J|5|4|3",
+"Если Вы теряете какую-то вещь, приходит ли Вам в голову мысль о том, что \"кто-то, должно быть, украл ее или положил не туда\"?|If you lose some thing, does the thought come to your mind that 'someone must have stolen it or put it somewhere else'?|Dacă pierdeți un lucru, vă vine în minte gândul că „cineva l-a furat sau l-a mutat în altă parte\"?|H|4|5|6",
+"Если бы Вы подумали, что кто-то относится к Вам и к Вашим действиям с подозрением, стали бы Вы выяснять с ними этот вопрос вместо того, чтобы предоставить им самим во всем разобраться?|If you thought that someone regarded you and your actions with suspicion, would you confront them about it instead of leaving them to sort it out themselves?|Dacă ați bănui că cineva privește cu suspiciune pe dumneavoastră și acțiunile dumneavoastră, i-ați spune acest lucru direct, în loc să-l lăsați să se descurce singur?|F|6|4|2",
+"Чувствуете ли Вы, что Ваш возраст работает не на Вас (что Вы слишком молоды или слишком стары)?|Do you feel that your age is working against you (that you are too young or too old)?|Simțiți că vârsta lucrează împotriva dumneavoastră (că sunteți prea tânăr sau prea bătrân)?|B|2|5|6",
+"Бывают ли у Вас приступы грусти и подавленности без всякой причины?|Do you have attacks of sadness and dejection without any cause?|Aveți accese de tristețe și abatere fără niciun motiv?|D|2|4|5",
+"Часто ли Вы ворчите об условиях жизни, с которыми Вам приходится сталкиваться?|Do you often grumble about the living conditions you have to face?|Vă plângeți adesea de condițiile de viață cu care vă confruntați?|H|2|5|6",
+"Имеете ли Вы склонность прятать свои чувства?|Do you have a tendency to hide your feelings?|Aveți tendința să vă ascundeți sentimentele?|F|0|3|5",
+"Считаете ли Вы, что у Вас много задушевных друзей?|Do you think you have many close, heart-to-heart friends?|Credeți că aveți mulți prieteni apropiați, sufletești?|J|5|3|3",
+];
+
+var I18N = {
+  ru: {
+    tbTitle: "Oxford Capacity Analysis", tbSub: "Тест анализа личности · 200 вопросов",
+    inBadge: "OCA-IP · 200 вопросов · 10 шкал",
+    inTitle: "Оксфордский тест анализа личности",
+    inDesc: "Стандартизированный опросник: на каждый вопрос доступно три варианта ответа — «Да», «Может быть», «Нет». По результатам строится профиль личности по 10 шкалам (A–J), рассчитываются показатели достоверности и формируется PDF-отчёт. Работает полностью автономно, данные сохраняются только в вашем браузере.",
+    f1: "вопросов", f2: "шкал личности A–J", f3: "минут заполнение", f4: "диапазон профиля",
+    formTitle: "Данные респондента",
+    fName: "ФИО / Псевдоним", fAge: "Возраст", fGender: "Пол", fDate: "Дата тестирования", fNote: "Примечание",
+    male: "Мужской", female: "Женский",
+    phName: "Иванов Иван", phNote: "—",
+    inNote: "Пол необходим для выбора корректной нормативной таблицы. Обязательные поля отмечены *",
+    start: "Начать тест",
+    resumeTitle: "Обнаружен незавершённый тест",
+    resumeBtn: "Продолжить", discardBtn: "Начать заново",
+    qOf: "Вопрос {0} из 200", answered: "Отвечено: {0} ({1}%)",
+    gridBtn: "Матрица", aYes: "ДА", aMb: "МОЖЕТ БЫТЬ", aNo: "НЕТ",
+    prev: "Назад", next: "Вперед", finish: "Завершить тест",
+    finishLeft: "Завершить тест (осталось: {0})",
+    hint: "Горячие клавиши: 1 · 2 · 3 — ответ, ← → — навигация",
+    qNum: "Вопрос {0}",
+    gTitle: "Матрица вопросов", gClose: "Закрыть",
+    gAll: "все", gDone: "отвечен", gNone: "пропущен", gCur: "текущий",
+    rTitle: "Результаты тестирования",
+    rName: "Респондент", rAge: "Возраст", rGender: "Пол", rDate: "Дата", rDur: "Время прохождения", rNote: "Примечание", rStarted: "Начало",
+    m: "муж.", f: "жен.", noNote: "—",
+    rValidity: "Достоверность профиля",
+    stLabel: "Надежность профиля", stOk: "Валиден", stWarn: "Сомнительный", stBad: "Невалиден",
+    cPlus: "Ответов «Да»", cMb: "«Может быть»", cNo: "Ответов «Нет»", cCons: "Консистентность",
+    wM35: "Дано {0} ответов «Может быть» (порог 35) — достоверность снижена из-за высокой нерешительности респондента.",
+    wCons: "Индекс консистентности {0}% (проверочные пары вопросов) — ответы противоречивы.",
+    wRandom: "Профиль совпадает с матрицей случайного заполнения ({0}/10 шкал) — вероятны случайные ответы.",
+    iOk: "Профиль устойчив: проверочные пары согласованы, количество «Может быть» в норме.",
+    warnTitle: "Предупреждение",
+    rChart: "Профиль личности OCA",
+    rTable: "Сводная таблица результатов",
+    thScale: "Шкала", thQuality: "Качество", thRaw: "Сырой балл", thIdx: "Итоговый индекс", thZone: "Зона профиля",
+    zOk: "Желательное состояние", zMid: "Приемлемое состояние", zWatch: "Требует внимания", zBad: "Неприемлемое состояние",
+    zOkShort: "Желательное", zMidShort: "Приемлемое", zWatchShort: "Внимание", zBadShort: "Критическое",
+    rExport: "Экспорт", pdfBtn: "Скачать PDF-отчёт", restart: "Пройти заново / Очистить данные",
+    median: "Среднее", 
+    needName: "Укажите ФИО/псевдоним", needAge: "Укажите возраст (10–120)", needGender: "Выберите пол",
+    confRestart: "Удалить все данные и пройти тест заново? Ответы и результаты будут безвозвратно стёрты.",
+    ok: "OK", cancel: "Отмена",
+    durHMS: "{0} ч {1} мин {2} с", durM: "{0} мин {1} с", durS: "{0} с",
+    csvHeader: "OCA — профиль анализа личности",
+    foot: "Индексы рассчитаны по официальным нормативным таблицам OCA-IP ({0}). Данные обработаны локально в браузере.",
+    demoW: "женщины 18+", demoM: "мужчины 18+", demoB: "юноши 14–18", demoG: "девушки 14–18",
+    pdfTitle: "Профиль анализа личности (OCA)",
+    pdfSub: "Oxford Capacity Analysis (OCA-IP) · 200 вопросов",
+    pdfMeta: "Респондент", pdfDate: "Дата", pdfDur: "Длительность", pdfStatus: "Статус",
+    pdfRaw: "Сырой", pdfIdx: "Индекс", pdfZone: "Зона",
+    pdfCounts: "Контрольные суммы ответов", pdfTable: "Шкалы",
+    yesShort: "Да", mbShort: "Может быть", noShort: "Нет",
+    storageWarn: "Автосохранение недоступно (режим приватного просмотра?) — прогресс не будет сохранён.",
+    confirmLeave: "Тест не завершён. Закрыть страницу и потерять прогресс?",
+    itpTitle: "Подробная трактовка результатов",
+    pdfItpTitle: "Подробная трактовка результатов (OCA)",
+  },
+  en: {
+    tbTitle: "Oxford Capacity Analysis", tbSub: "Personality test · 200 questions",
+    inBadge: "OCA-IP · 200 questions · 10 traits",
+    inTitle: "Oxford Capacity Analysis (OCA)",
+    inDesc: "A standardized inventory: every question offers three answer options — Yes, Maybe, No. The results build a personality profile across 10 traits (A–J), compute validity metrics and generate a PDF report. Works fully offline; your data stays in your browser only.",
+    f1: "questions", f2: "personality traits A–J", f3: "minutes to complete", f4: "profile range",
+    formTitle: "Respondent details",
+    fName: "Name / Pseudonym", fAge: "Age", fGender: "Sex", fDate: "Test date", fNote: "Note",
+    male: "Male", female: "Female",
+    phName: "John Smith", phNote: "—",
+    inNote: "Sex is required to select the correct normative table. Mandatory fields are marked *",
+    start: "Start the test",
+    resumeTitle: "Unfinished test found",
+    resumeBtn: "Resume", discardBtn: "Start over",
+    qOf: "Question {0} of 200", answered: "Answered: {0} ({1}%)",
+    gridBtn: "Matrix", aYes: "YES", aMb: "MAYBE", aNo: "NO",
+    prev: "Back", next: "Next", finish: "Finish the test",
+    finishLeft: "Finish the test ({0} left)",
+    hint: "Hotkeys: 1 · 2 · 3 — answer, ← → — navigate",
+    qNum: "Question {0}",
+    gTitle: "Question matrix", gClose: "Close",
+    gAll: "all", gDone: "answered", gNone: "skipped", gCur: "current",
+    rTitle: "Test results",
+    rName: "Respondent", rAge: "Age", rGender: "Sex", rDate: "Date", rDur: "Completion time", rNote: "Note", rStarted: "Started",
+    m: "male", f: "female", noNote: "—",
+    rValidity: "Profile validity",
+    stLabel: "Reliability", stOk: "Valid", stWarn: "Questionable", stBad: "Invalid",
+    cPlus: "“Yes” answers", cMb: "“Maybe” answers", cNo: "“No” answers", cCons: "Consistency",
+    wM35: "{0} “Maybe” answers given (threshold 35) — reliability is reduced due to high indecisiveness.",
+    wCons: "Consistency index {0}% (check-pairs of questions) — answers are contradictory.",
+    wRandom: "The profile matches the random-answering matrix ({0}/10 traits) — random answers are likely.",
+    iOk: "The profile is stable: check-pairs agree, the amount of “Maybe” is within norm.",
+    warnTitle: "Warning",
+    rChart: "OCA Personality Profile",
+    rTable: "Summary table",
+    thScale: "Trait", thQuality: "Quality", thRaw: "Raw score", thIdx: "Standard index", thZone: "Profile zone",
+    zOk: "Desirable state", zMid: "Acceptable state", zWatch: "State of attention", zBad: "Unacceptable state",
+    zOkShort: "Desirable", zMidShort: "Acceptable", zWatchShort: "Attention", zBadShort: "Critical",
+    rExport: "Export", pdfBtn: "Download PDF report", restart: "Retake / Clear data",
+    median: "Mean",
+    needName: "Enter a name or pseudonym", needAge: "Enter an age (10–120)", needGender: "Select sex",
+    confRestart: "Erase all data and retake the test? Answers and results will be irreversibly deleted.",
+    ok: "OK", cancel: "Cancel",
+    durHMS: "{0} h {1} min {2} s", durM: "{0} min {1} s", durS: "{0} s",
+    csvHeader: "OCA — personality profile",
+    foot: "Indexes are computed with the official OCA-IP normative tables ({0}). Data processed locally in your browser.",
+    demoW: "women 18+", demoM: "men 18+", demoB: "boys 14–18", demoG: "girls 14–18",
+    pdfTitle: "Personality Analysis Profile (OCA)",
+    pdfSub: "Oxford Capacity Analysis (OCA-IP) · 200 questions",
+    pdfMeta: "Respondent", pdfDate: "Date", pdfDur: "Duration", pdfStatus: "Status",
+    pdfRaw: "Raw", pdfIdx: "Index", pdfZone: "Zone",
+    pdfCounts: "Answer control sums", pdfTable: "Traits",
+    yesShort: "Yes", mbShort: "Maybe", noShort: "No",
+    storageWarn: "Autosave is unavailable (private browsing?) — progress will not be saved.",
+    confirmLeave: "The test is not finished. Close the page and lose progress?",
+    itpTitle: "Detailed interpretation of results",
+    pdfItpTitle: "Detailed interpretation (OCA)",
+  },
+  ro: {
+    tbTitle: "Oxford Capacity Analysis", tbSub: "Test de personalitate · 200 de întrebări",
+    inBadge: "OCA-IP · 200 de întrebări · 10 scale",
+    inTitle: "Testul Oxford de analiză a personalității",
+    inDesc: "Chestionar standardizat: fiecare întrebare oferă trei variante de răspuns — „Da“, „Poate“, „Nu“. Pe baza rezultatelor se construiește profilul personalității pe 10 scale (A–J), se calculează indicatorii de validitate și se generează un raport PDF. Funcționează complet autonom; datele dumneavoastră rămân doar în browserul dumneavoastră.",
+    f1: "de întrebări", f2: "scale de personalitate A–J", f3: "minute de completare", f4: "intervalul profilului",
+    formTitle: "Datele respondentului",
+    fName: "Nume / Pseudonim", fAge: "Vârsta", fGender: "Sexul", fDate: "Data testării", fNote: "Notă",
+    male: "Masculin", female: "Feminin",
+    phName: "Popescu Ion", phNote: "—",
+    inNote: "Sexul este necesar pentru alegerea tabelului normativ corect. Câmpurile obligatorii sunt marcate cu *",
+    start: "Începeți testul",
+    resumeTitle: "S-a găsit un test neterminat",
+    resumeBtn: "Continuați", discardBtn: "Reîncepeți de la zero",
+    qOf: "Întrebarea {0} din 200", answered: "Răspunsuri: {0} ({1}%)",
+    gridBtn: "Matricea", aYes: "DA", aMb: "POATE", aNo: "NU",
+    prev: "Înapoi", next: "Înainte", finish: "Finalizați testul",
+    finishLeft: "Finalizați testul (au rămas: {0})",
+    hint: "Taste rapide: 1 · 2 · 3 — răspuns, ← → — navigare",
+    qNum: "Întrebarea {0}",
+    gTitle: "Matricea întrebărilor", gClose: "Închideți",
+    gAll: "toate", gDone: "răspunsă", gNone: "fără răspuns", gCur: "curentă",
+    rTitle: "Rezultatele testării",
+    rName: "Respondent", rAge: "Vârsta", rGender: "Sexul", rDate: "Data", rDur: "Timp de completare", rNote: "Notă", rStarted: "Început",
+    m: "masculin", f: "feminin", noNote: "—",
+    rValidity: "Validitatea profilului",
+    stLabel: "Fiabilitatea profilului", stOk: "Valid", stWarn: "Îndoielnic", stBad: "Invalid",
+    cPlus: "Răspunsuri „Da“", cMb: "„Poate“", cNo: "Răspunsuri „Nu“", cCons: "Consistența",
+    wM35: "S-au dat {0} răspunsuri „Poate“ (pragul 35) — validitatea este redusă din cauza indeciziei ridicate.",
+    wCons: "Indicele de consistență {0}% (perechi de verificare) — răspunsurile sunt contradictorii.",
+    wRandom: "Profilul corespunde matricei de completare aleatorie ({0}/10 scale) — este probabil ca răspunsurile să fie aleatorii.",
+    iOk: "Profilul este stabil: perechile de verificare sunt coerente, numărul de răspunsuri „Poate“ este în normă.",
+    warnTitle: "Avertisment",
+    rChart: "Profilul personalității OCA",
+    rTable: "Tabelul rezumat al rezultatelor",
+    thScale: "Scala", thQuality: "Calitatea", thRaw: "Punctaj brut", thIdx: "Indicele final", thZone: "Zona profilului",
+    zOk: "Starea dorită", zMid: "Starea acceptabilă", zWatch: "Necesită atenție", zBad: "Starea inacceptabilă",
+    zOkShort: "Dorită", zMidShort: "Acceptabilă", zWatchShort: "Atenție", zBadShort: "Critică",
+    rExport: "Export", pdfBtn: "Descărcați raportul PDF", restart: "Reluați / Ștergeți datele",
+    median: "Media",
+    needName: "Introduceți numele/pseudonimul", needAge: "Introduceți vârsta (10–120)", needGender: "Selectați sexul",
+    confRestart: "Ștergeți toate datele și reluați testul? Răspunsurile și rezultatele vor fi șterse definitiv.",
+    ok: "OK", cancel: "Anulare",
+    durHMS: "{0} h {1} min {2} s", durM: "{0} min {1} s", durS: "{0} s",
+    csvHeader: "OCA — profil de analiză a personalității",
+    foot: "Indicii sunt calculați conform tabelelor normative oficiale OCA-IP ({0}). Datele sunt procesate local, în browserul dumneavoastră.",
+    demoW: "femei 18+", demoM: "bărbați 18+", demoB: "băieți 14–18", demoG: "fete 14–18",
+    pdfTitle: "Profilul de analiză a personalității (OCA)",
+    pdfSub: "Oxford Capacity Analysis (OCA-IP) · 200 de întrebări",
+    pdfMeta: "Respondent", pdfDate: "Data", pdfDur: "Durata", pdfStatus: "Statutul",
+    pdfRaw: "Brut", pdfIdx: "Indice", pdfZone: "Zona",
+    pdfCounts: "Totalurile de control ale răspunsurilor", pdfTable: "Scalele",
+    yesShort: "Da", mbShort: "Poate", noShort: "Nu",
+    storageWarn: "Salvarea automată nu este disponibilă (navigare privată?) — progresul nu va fi salvat.",
+    confirmLeave: "Testul nu este finalizat. Închideți pagina și pierdeți progresul?",
+    itpTitle: "Interpretarea detaliată a rezultatelor",
+    pdfItpTitle: "Interpretarea detaliată (OCA)",
+  }
+};
+
+function T(key){ return (I18N[S.lang] && I18N[S.lang][key]) || I18N.ru[key] || key; }
+function fmt(str){ var args = arguments; return String(str).replace(/\{(\d+)\}/g, function(m, i){ return args[+i + 1] !== undefined ? args[+i + 1] : m; }); }
+
+/* ---- trait metadata (letters order A..J) ---- */
+var TRAITS = ["A","B","C","D","E","F","G","H","I","J"];
+var LANGS = ["ru", "en", "ro"];
+var QTXT = { ru: 0, en: 1, ro: 2 };   /* question text column */
+var TSCALE = 3, TW = { plus: 4, mb: 5, minus: 6 };  /* key columns in OCA_Q */
+function poles(L){ var p = OCA_POLES[L]; return S.lang === "ru" ? [p[0], p[1]] : S.lang === "ro" ? [p[4], p[5]] : [p[2], p[3]]; }
+function qText(i){ return OCA_Q[i].split("|")[QTXT[S.lang] || 0]; }
+
+/* ---- state & storage ---- */
+var STORAGE_KEY = "oca_test_v1";
+var S = {
+  lang: "ru",
+  meta: { name: "", age: "", gender: "", date: "", note: "" },
+  answers: new Array(200).fill(null),
+  idx: 0,
+  startedAt: null,
+  finishedAt: null
+};
+var storageOk = true;
+function saveState(){
+  if (!storageOk) return;
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); }
+  catch(e){ storageOk = false; }
+}
+function loadState(){
+  try {
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    var o = JSON.parse(raw);
+    if (!o || !o.answers || o.answers.length !== 200) return null;
+    return o;
+  } catch(e){ return null; }
+}
+function clearState(){
+  try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+  if (LANGS.indexOf(S.lang) < 0) S.lang = "ru";
+  S.meta = { name: "", age: "", gender: "", date: "", note: "" };
+  S.answers = new Array(200).fill(null);
+  S.idx = 0; S.startedAt = null; S.finishedAt = null;
+}
+var saveTimer = null;
+function saveSoon(){ clearTimeout(saveTimer); saveTimer = setTimeout(saveState, 120); }
+
+
+/* ---- misc helpers ---- */
+function pad2(n){ return (n < 10 ? "0" : "") + n; }
+function todayStr(){
+  var d = new Date();
+  return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate());
+}
+function fmtDate(iso){
+  if (!iso) return "—";
+  var p = iso.split("-");
+  return p.length === 3 ? p[2] + "." + p[1] + "." + p[0] : iso;
+}
+function fmtDuration(ms){
+  var s = Math.max(0, Math.floor(ms / 1000));
+  var h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  if (h > 0) return fmt(T("durHMS"), h, m, pad2(sec));
+  if (m > 0) return fmt(T("durM"), m, pad2(sec));
+  return fmt(T("durS"), sec);
+}
+function signed(v){ return (v > 0 ? "+" : "") + String(v); }
+function sanitizeName(s){
+  s = String(s || "").trim().replace(/[\\\/:*?"<>|]+/g, "").replace(/\s+/g, "_");
+  if (s.length > 60) s = s.slice(0, 60);
+  return s || "No_Name";
+}
+function esc(s){
+  return String(s).replace(/[&<>"']/g, function(c){
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+
+
+/* ---- taker-specific i18n additions ---- */
+Object.assign(I18N.ru, {
+  inDesc: "Стандартизированный опросник: на каждый вопрос доступно три варианта ответа — «Да», «Может быть», «Нет». Тест занимает 20–40 минут. Итоги тестирования видны только коучу: в конце вы просто скачаете файл с ответами и отправите его коучу. Работает полностью автономно, данные сохраняются только в вашем браузере.",
+  dTitle: "Тест завершён!",
+  dText: "Вы ответили на все 200 вопросов. Эта страница не показывает итоги тестирования — их расшифровывает коуч. Скачайте файл с результатами и отправьте его коучу.",
+  dBtn: "Скачать результат",
+  dNote: "В файле — только ваши данные и ответы на вопросы. Оценок и трактовок в нём нет: расшифровку коуч делает у себя на странице.",
+  dAgain: "Файл скачан. Если загрузка не началась — нажмите кнопку ещё раз.",
+  dRestart: "Пройти тест заново"
+});
+Object.assign(I18N.en, {
+  inDesc: "A standardized inventory: every question offers three answer options — Yes, Maybe, No. The test takes 20–40 minutes. Only your coach sees the results: at the end you simply download a file with your answers and send it to the coach. Works fully offline; your data stays in your browser only.",
+  dTitle: "Test completed!",
+  dText: "You have answered all 200 questions. This page does not show your results — only your coach sees them. Download your result file and send it to the coach.",
+  dBtn: "Download result",
+  dNote: "The file contains only your details and answers — no scores or interpretations. The coach decodes it on a separate page.",
+  dAgain: "File downloaded. If the download did not start, press the button again.",
+  dRestart: "Take the test again"
+});
+Object.assign(I18N.ro, {
+  inDesc: "Chestionar standardizat: fiecare întrebare oferă trei variante de răspuns — „Da“, „Poate“, „Nu“. Testul durează 20–40 de minute. Rezultatele le vede doar coach-ul: la final descărcați un fișier cu răspunsurile și îl trimiteți coach-ului. Funcționează complet autonom; datele rămân doar în browserul dumneavoastră.",
+  dTitle: "Testul este finalizat!",
+  dText: "Ați răspuns la toate cele 200 de întrebări. Această pagină nu afișează rezultatele — le vede doar coach-ul. Descărcați fișierul cu rezultate și trimiteți-l coach-ului.",
+  dBtn: "Descărcați rezultatul",
+  dNote: "Fișierul conține doar datele și răspunsurile dumneavoastră — fără punctaje sau interpretări. Coach-ul le decodează pe pagina sa.",
+  dAgain: "Fișierul a fost descărcat. Dacă descărcarea nu a început, apăsați butonul din nou.",
+  dRestart: "Parcurgeți testul din nou"
+});
+
+/* ---------- confirm modal ---------- */
+var confirmCb = null;
+function askConfirm(msg, cb){
+  $("confirm-msg").textContent = msg;
+  confirmCb = cb;
+  $("confirm-overlay").classList.remove("hidden");
+  $("confirm-ok").focus();
+}
+function bindConfirm(){
+  $("confirm-ok").addEventListener("click", function(){
+    $("confirm-overlay").classList.add("hidden");
+    var cb = confirmCb; confirmCb = null;
+    if (cb) cb();
+  });
+  $("confirm-cancel").addEventListener("click", function(){
+    $("confirm-overlay").classList.add("hidden"); confirmCb = null;
+  });
+  $("confirm-overlay").addEventListener("click", function(e){
+    if (e.target === $("confirm-overlay")) { $("confirm-overlay").classList.add("hidden"); confirmCb = null; }
+  });
+}
+
+
+/* ---------- intro form ---------- */
+function getGender(){
+  var b = document.querySelector("#gender-row .seg-btn.sel");
+  return b ? b.getAttribute("data-g") : "";
+}
+function setGender(g){
+  document.querySelectorAll("#gender-row .seg-btn").forEach(function(b){
+    b.classList.toggle("sel", b.getAttribute("data-g") === g);
+  });
+}
+function bindIntro(){
+  $("f-date").value = todayStr();
+  S.meta.date = todayStr();
+  function readForm(){
+    S.meta.name = $("f-name").value.trim();
+    S.meta.age = $("f-age").value;
+    S.meta.gender = getGender();
+    S.meta.date = $("f-date").value || todayStr();
+    S.meta.note = $("f-note").value.trim();
+    var okName = S.meta.name.length > 0;
+    var okAge = S.meta.age !== "" && +S.meta.age >= 10 && +S.meta.age <= 120;
+    var okGen = !!S.meta.gender;
+    $("btn-start").disabled = !(okName && okAge && okGen);
+    if (!okName) $("btn-start").title = T("needName");
+    else if (!okAge) $("btn-start").title = T("needAge");
+    else if (!okGen) $("btn-start").title = T("needGender");
+    else $("btn-start").title = "";
+  }
+  ["f-name", "f-age", "f-date", "f-note"].forEach(function(id){
+    $(id).addEventListener("input", readForm);
+    $(id).addEventListener("change", readForm);
+  });
+  document.querySelectorAll("#gender-row .seg-btn").forEach(function(b){
+    b.addEventListener("click", function(){ setGender(b.getAttribute("data-g")); readForm(); });
+  });
+  readForm();
+
+  $("btn-start").addEventListener("click", function(){
+    readForm();
+    if ($("btn-start").disabled) return;
+    S.answers = new Array(200).fill(null);
+    S.idx = 0;
+    S.startedAt = Date.now();
+    S.finishedAt = null;
+    saveState();
+    enterTest();
+  });
+  $("btn-resume").addEventListener("click", function(){
+    enterTest();
+  });
+  $("btn-discard").addEventListener("click", function(){
+    askConfirm(T("confRestart"), function(){
+      clearState();
+      $("f-date").value = todayStr();
+      $("f-name").value = ""; $("f-age").value = ""; $("f-note").value = "";
+      setGender("");
+      $("btn-start").disabled = true;
+      $("resume-box").classList.add("hidden");
+    });
+  });
+}
+
+function showResumeBox(st){
+  var answered = st.answers.filter(Boolean).length;
+  var when = st.savedAt ? new Date(st.savedAt) : null;
+  $("rs-info").textContent = fmt(T("qOf"), Math.min(answered + 1, 200)) + " · " +
+    fmt(T("answered"), answered, Math.round(answered * 100 / 200)) +
+    (when ? (" · " + fmtDate(when.getFullYear() + "-" + pad2(when.getMonth() + 1) + "-" + pad2(when.getDate())) + " " + pad2(when.getHours()) + ":" + pad2(when.getMinutes())) : "");
+  $("resume-box").classList.remove("hidden");
+  if (st.finishedAt) {
+    $("resume-box").classList.add("hidden");
+    $("btn-resume").textContent = T("resumeBtn");
+  }
+}
+
+
+/* ---------- test screen ---------- */
+function enterTest(){
+  showScreen("screen-test");
+  renderQuestion();
+}
+function answeredCount(){ return S.answers.filter(Boolean).length; }
+
+function renderQuestion(){
+  var i = S.idx;
+  $("q-num").textContent = fmt(T("qNum"), i + 1);
+  $("q-text").textContent = qText(i);
+  $("pg-label").textContent = fmt(T("qOf"), i + 1);
+  var done = answeredCount();
+  $("pg-answered").textContent = fmt(T("answered"), done, Math.round(done * 100 / 200));
+  $("pg-bar").style.width = (done * 100 / 200) + "%";
+  ["+", "m", "-"].forEach(function(a, k){
+    var btn = $(["a-yes", "a-mb", "a-no"][k]);
+    btn.classList.toggle("picked", S.answers[i] === a);
+  });
+  $("btn-prev").disabled = i === 0;
+  $("btn-next").disabled = i === 199;
+  var left = 200 - done;
+  $("btn-finish").disabled = left > 0;
+  $("btn-finish").textContent = left > 0 ? fmt(T("finishLeft"), left) : T("finish");
+}
+
+function setAnswer(a, advance){
+  S.answers[S.idx] = a;
+  if (!S.startedAt) S.startedAt = Date.now();
+  saveSoon();
+  if (advance && S.idx < 199) { S.idx++; }
+  renderQuestion();
+}
+
+function bindTest(){
+  $("a-yes").addEventListener("click", function(){ setAnswer("+", true); });
+  $("a-mb").addEventListener("click", function(){ setAnswer("m", true); });
+  $("a-no").addEventListener("click", function(){ setAnswer("-", true); });
+  $("btn-prev").addEventListener("click", function(){ if (S.idx > 0) { S.idx--; renderQuestion(); } });
+  $("btn-next").addEventListener("click", function(){ if (S.idx < 199) { S.idx++; renderQuestion(); } });
+  $("btn-finish").addEventListener("click", finishTest);
+
+  /* grid modal */
+  $("btn-grid").addEventListener("click", openGrid);
+  $("btn-grid-close").addEventListener("click", closeGrid);
+  $("grid-overlay").addEventListener("click", function(e){ if (e.target === $("grid-overlay")) closeGrid(); });
+
+  /* keyboard */
+  document.addEventListener("keydown", function(e){
+    var gridOpen = !$("grid-overlay").classList.contains("hidden");
+    var confirmOpen = !$("confirm-overlay").classList.contains("hidden");
+    var testVisible = !$("screen-test").classList.contains("hidden");
+    if (confirmOpen) {
+      if (e.key === "Escape") { $("confirm-overlay").classList.add("hidden"); confirmCb = null; }
+      return;
+    }
+    if (gridOpen) {
+      if (e.key === "Escape" || e.key === "Escape") closeGrid();
+      return;
+    }
+    if (!testVisible) return;
+    var tag = (e.target && e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea" || tag === "select") return;
+    if (e.key === "1") { setAnswer("+", true); e.preventDefault(); }
+    else if (e.key === "2") { setAnswer("m", true); e.preventDefault(); }
+    else if (e.key === "3") { setAnswer("-", true); e.preventDefault(); }
+    else if (e.key === "ArrowLeft") { if (S.idx > 0) { S.idx--; renderQuestion(); } e.preventDefault(); }
+    else if (e.key === "ArrowRight") { if (S.idx < 199) { S.idx++; renderQuestion(); } e.preventDefault(); }
+    else if (e.key === "Enter") { if (S.idx < 199) { S.idx++; renderQuestion(); } }
+  });
+
+  window.addEventListener("beforeunload", function(e){
+    saveState();
+    var any = S.answers.some(Boolean);
+    if (any && !S.finishedAt) {
+      e.preventDefault(); e.returnValue = "";
+    }
+  });
+  document.addEventListener("visibilitychange", function(){ if (document.visibilityState === "hidden") saveState(); });
+}
+
+
+/* ---------- grid ---------- */
+function buildGrid(){
+  var g = $("g-grid");
+  g.innerHTML = "";
+  for (var i = 0; i < 200; i++) {
+    (function(i){
+      var b = document.createElement("button");
+      b.className = "gcell"; b.type = "button";
+      b.setAttribute("data-i", i);
+      b.innerHTML = String(i + 1) + '<span class="mini">' + OCA_Q[i].split("|")[TSCALE] + '</span>';
+      b.addEventListener("click", function(){
+        S.idx = i; closeGrid(); renderQuestion();
+      });
+      g.appendChild(b);
+    })(i);
+  }
+}
+var ANS_CLS = { "+": "a-plus", "m": "a-mb", "-": "a-minus" };
+function refreshGrid(){
+  var cells = $("g-grid").children;
+  for (var i = 0; i < cells.length; i++) {
+    var a = S.answers[i];
+    cells[i].classList.toggle("a-plus", a === "+");
+    cells[i].classList.toggle("a-mb", a === "m");
+    cells[i].classList.toggle("a-minus", a === "-");
+    cells[i].classList.toggle("cur", i === S.idx);
+  }
+}
+function openGrid(){ refreshGrid(); $("grid-overlay").classList.remove("hidden"); }
+function closeGrid(){ $("grid-overlay").classList.add("hidden"); $("btn-grid").focus(); }
+
+
+
+/* ================= taker glue ================= */
+/* Screens: intro -> test -> done. Results are never shown to the test taker. */
+
+var $ = function(id){ return document.getElementById(id); };
+var SCREENS = ["screen-intro", "screen-test", "screen-done"];
+function showScreen(id){
+  SCREENS.forEach(function(s){ $(s).classList.toggle("hidden", s !== id); });
+  window.scrollTo(0, 0);
+}
+
+/* ---------- confirm modal ---------- */
+var confirmCb = null;
+function askConfirm(msg, cb){
+  $("confirm-msg").textContent = msg;
+  confirmCb = cb;
+  $("confirm-overlay").classList.remove("hidden");
+  $("confirm-ok").focus();
+}
+function bindConfirm(){
+  $("confirm-ok").addEventListener("click", function(){
+    $("confirm-overlay").classList.add("hidden");
+    var cb = confirmCb; confirmCb = null;
+    if (cb) cb();
+  });
+  $("confirm-cancel").addEventListener("click", function(){
+    $("confirm-overlay").classList.add("hidden"); confirmCb = null;
+  });
+  $("confirm-overlay").addEventListener("click", function(e){
+    if (e.target === $("confirm-overlay")) { $("confirm-overlay").classList.add("hidden"); confirmCb = null; }
+  });
+}
+
+/* ---------- i18n static relabel (taker screens only) ---------- */
+function applyLang(){
+  document.documentElement.lang = S.lang;
+  $("tb-title").textContent = T("tbTitle");
+  $("tb-sub").textContent = T("tbSub");
+  LANGS.forEach(function(l){ $("lang-" + l).classList.toggle("on", S.lang === l); });
+  $("in-badge").textContent = T("inBadge");
+  $("in-title").textContent = T("inTitle");
+  $("in-desc").textContent = T("inDesc");
+  $("in-f1").textContent = T("f1"); $("in-f2").textContent = T("f2");
+  $("in-f3").textContent = T("f3"); $("in-f4").textContent = T("f4");
+  $("in-formtitle").textContent = T("formTitle");
+  $("f-name").previousElementSibling.innerHTML = esc(T("fName")) + ' <span class="req">*</span>';
+  $("f-age").previousElementSibling.innerHTML = esc(T("fAge")) + ' <span class="req">*</span>';
+  $("f-date").previousElementSibling.textContent = T("fDate");
+  $("f-note").previousElementSibling.textContent = T("fNote");
+  $("lbl-gender").innerHTML = esc(T("fGender")) + ' <span class="req">*</span>';
+  $("gb-male").textContent = T("male"); $("gb-female").textContent = T("female");
+  $("f-name").placeholder = T("phName"); $("f-note").placeholder = T("phNote");
+  $("in-note").textContent = T("inNote");
+  $("btn-start").textContent = T("start");
+  $("rs-title").textContent = T("resumeTitle");
+  $("btn-resume").textContent = T("resumeBtn");
+  $("btn-discard").textContent = T("discardBtn");
+  $("a-yes-t").textContent = T("aYes"); $("a-mb-t").textContent = T("aMb"); $("a-no-t").textContent = T("aNo");
+  $("t-prev").textContent = T("prev"); $("t-next").textContent = T("next");
+  $("btn-finish").textContent = T("finish");
+  $("t-hint").textContent = T("hint");
+  $("pg-gridbtn").textContent = T("gridBtn");
+  $("g-title").textContent = T("gTitle"); $("g-close").textContent = T("gClose");
+  $("g-legend").innerHTML =
+    '<span><i style="background:var(--yes-soft);border:1.5px solid var(--yes)"></i>' + T("aYes") + '</span>' +
+    '<span><i style="background:var(--mb-soft);border:1.5px solid var(--mb)"></i>' + T("aMb") + '</span>' +
+    '<span><i style="background:var(--no-soft);border:1.5px solid var(--no)"></i>' + T("aNo") + '</span>' +
+    '<span><i style="background:#fff;outline:2px solid var(--accent);outline-offset:-2px"></i>' + T("gCur") + '</span>';
+  $("confirm-cancel").textContent = T("cancel");
+  $("confirm-ok").textContent = T("ok");
+  /* done screen */
+  $("d-title").textContent = T("dTitle");
+  $("d-text").textContent = T("dText");
+  $("btn-download-t").textContent = T("dBtn");
+  $("d-note").textContent = T("dNote");
+  $("d-restart").textContent = T("dRestart");
+  $("d-status").textContent = T("dAgain");
+}
+
+/* ---------- finish: download only, no results ---------- */
+function finishTest(){
+  if (answeredCount() < 200) return;
+  S.finishedAt = Date.now();
+  saveState();
+  updateDoneScreen();
+  showScreen("screen-done");
+}
+function updateDoneScreen(){
+  var who = (S.meta.name || "—") + (S.meta.date ? (" · " + fmtDate(S.meta.date)) : "");
+  $("d-for").textContent = who;
+  $("d-status").classList.add("hidden");
+}
+
+/* ---------- language switch ---------- */
+function setLang(lang){
+  S.lang = lang;
+  saveSoon();
+  applyLang();
+  var introVisible = !$("screen-intro").classList.contains("hidden");
+  var doneVisible = !$("screen-done").classList.contains("hidden");
+  if (introVisible) {
+    var st = loadState();
+    if (st && st.answers.some(Boolean) && !st.finishedAt) showResumeBox(st);
+    $("btn-start").disabled = !($("f-name").value.trim() && $("f-age").value && +$("f-age").value >= 10 && getGender());
+  }
+  if (!$("screen-test").classList.contains("hidden")) renderQuestion();
+  if (doneVisible) updateDoneScreen();
+}
+function bindLang(){
+  LANGS.forEach(function(l){
+    $("lang-" + l).addEventListener("click", function(){ setLang(l); });
+  });
+}
+
+/* ---------- result export: JSON with meta + answers only (no scores) ---------- */
+function buildTakerJSON(){
+  return JSON.stringify({
+    app: "Oxford Capacity Analysis (OCA-IP)",
+    format: "oca-test-result",
+    version: 1,
+    generatedAt: new Date().toISOString(),
+    lang: S.lang,
+    meta: S.meta,
+    startedAt: S.startedAt ? new Date(S.startedAt).toISOString() : null,
+    finishedAt: S.finishedAt ? new Date(S.finishedAt).toISOString() : null,
+    durationMs: (S.finishedAt && S.startedAt) ? (S.finishedAt - S.startedAt) : null,
+    answers: S.answers
+  }, null, 2);
+}
+function exportTakerJSON(){
+  var blob = new Blob([buildTakerJSON()], { type: "application/json" });
+  $("d-status").classList.remove("hidden");
+  downloadBlob(blob, "OCA_Result_" + sanitizeName(S.meta.name) + "_" + (S.meta.date || todayStr()) + ".json");
+}
+function bindDone(){
+  $("btn-download").addEventListener("click", exportTakerJSON);
+  $("d-restart").addEventListener("click", function(e){
+    e.preventDefault();
+    askConfirm(T("confRestart"), function(){
+      clearState();
+      location.reload();
+    });
+  });
+}
+
+/* ================= boot ================= */
+
+function boot(){
+  /* load saved state */
+  var st = loadState();
+  if (st) {
+    S.lang = LANGS.indexOf(st.lang) >= 0 ? st.lang : "ru";
+    S.meta = st.meta || S.meta;
+    S.answers = st.answers;
+    S.idx = Math.min(Math.max(st.idx || 0, 0), 199);
+    S.startedAt = st.startedAt || null;
+    S.finishedAt = st.finishedAt || null;
+    /* restore form fields */
+    $("f-name").value = S.meta.name || "";
+    $("f-age").value = S.meta.age || "";
+    $("f-note").value = S.meta.note || "";
+    if (S.meta.date) $("f-date").value = S.meta.date;
+    if (S.meta.gender) setGender(S.meta.gender);
+  }
+  if (!storageOk) {
+    var w = document.createElement("div");
+    w.className = "warnbox e"; w.style.margin = "0 0 14px";
+    w.textContent = T("storageWarn");
+    document.querySelector(".app").prepend(w);
+  }
+
+  applyLang();
+  bindIntro();
+  bindTest();
+  bindConfirm();
+  bindLang();
+  buildGrid();
+  bindDone();
+
+  if (st && st.finishedAt) {
+    /* the test has been completed: only the download screen is available */
+    updateDoneScreen();
+    showScreen("screen-done");
+  } else {
+    if (st && S.answers.some(Boolean)) showResumeBox({ answers: S.answers, savedAt: st.savedAt, finishedAt: st.finishedAt });
+    else $("resume-box").classList.add("hidden");
+    showScreen("screen-intro");
+  }
+}
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+else boot();
+
+function downloadBlob(blob, filename){
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 4000);
+}
+
+</script>
+</body>
+</html>
